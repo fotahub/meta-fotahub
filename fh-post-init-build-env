@@ -1,0 +1,54 @@
+#!/bin/bash
+
+get_machine_layer_name()
+{
+  local MACHINE=$1
+
+  case "${MACHINE}" in
+  "raspberrypi3")
+      echo "meta-raspberrypi"
+      ;;
+  "imx6qdlsabresd")
+      echo "meta-freescale"
+      ;;
+  *)
+      echo "todo-configure-machine-layer"
+      ;;
+  esac
+}
+
+show_usage()
+{
+  echo
+  echo "Usage: $(basename $0) <machine>"
+  echo
+  exit 1
+}
+
+main()
+{
+  if [ $# -lt 1 ]; then
+    show_usage
+    exit 1
+  fi
+  local MACHINE="$1"
+
+  if [ ! -d "$PWD/conf" ]; then
+    echo "ERROR: The 'conf' directory does not yet exist. Run the 'oe-init-build-env' script first."
+    exit 1
+  fi
+
+  # Finish project build configuration
+  MACHINE_LAYER_NAME=$(get_machine_layer_name $MACHINE)
+  sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" $PWD/conf/bblayers.conf
+  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" $PWD/conf/bblayers.conf
+  sed -i "s@{{machine}}@$MACHINE@" $PWD/conf/local.conf
+  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" $PWD/conf/local.conf
+
+  # Finish FullMetalUpdate configuration
+  # rm $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
+  # ln -s $YOCTO_SOURCES_DIR/meta-fotahub/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
+  cp $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf/$1/* $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf
+}
+
+main $@
