@@ -1,6 +1,6 @@
 MACHINE ??= '{{machine}}'
 DISTRO ?= 'poky'
-PACKAGE_CLASSES ?= "package_deb"
+PACKAGE_CLASSES ?= "package_rpm"
 EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
@@ -25,4 +25,7 @@ TMPDIR = "${TOPDIR}/tmp/${DISTRO}"
 HAWKBIT_CONFIG_FILE ?= "${SOURCES_DIR}/meta-fotahub/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg"
 OSTREE_BRANCHNAME ?= "fullmetalupdate-os-${MACHINE}"
 
+PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 PREFERRED_VERSION_fullmetalupdate = "2.0.1"
+
+DISTRO_FEATURES_append = " systemd"

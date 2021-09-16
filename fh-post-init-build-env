@@ -45,9 +45,11 @@ main()
   sed -i "s@{{machine}}@$MACHINE@" $PWD/conf/local.conf
   sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" $PWD/conf/local.conf
 
-  # Finish FullMetalUpdate configuration
-  # rm $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
-  # ln -s $YOCTO_SOURCES_DIR/meta-fotahub/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
+  # Replace nonexistent sym-linked Full Metal Update server configuration with empty but existing fake configuration file
+  rm $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
+  touch $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
+  
+  # Activate suitable Full Metal Update layer configuration
   cp $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf/$1/* $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf
 }
 
