@@ -1,0 +1,24 @@
+diff --git a/fullmetalupdate.py b/fullmetalupdate.py
+index 114c4cf..1ba34b7 100755
+--- a/fullmetalupdate.py
++++ b/fullmetalupdate.py
+@@ -52,9 +52,7 @@ async def main():
+     except Exception:
+         LOG_LEVEL = logging.INFO
+ 
+-    local_domain_name = config.get('server', 'server_host_name')
+-
+-    HOST = local_domain_name + ":" + config.get('client', 'hawkbit_url_port')
++    HOST = config.get('client', 'hawkbit_hostname') + ":" + config.get('client', 'hawkbit_url_port')
+     SSL = config.getboolean('client', 'hawkbit_ssl')
+     TENANT_ID = config.get('client', 'hawkbit_tenant_id')
+     TARGET_NAME = config.get('client', 'hawkbit_target_name')
+@@ -68,7 +66,7 @@ async def main():
+ 
+     OSTREE_REMOTE_ATTRIBUTES = {'name': config.get('ostree', 'ostree_name_remote'),
+                                 'gpg-verify': strtobool(config.get('ostree', 'ostree_gpg-verify')),
+-                                'url': url_type + local_domain_name + ":" + config.get('ostree', 'ostree_url_port')}
++                                'url': url_type + config.get('ostree', 'ostree_hostname') + ":" + config.get('ostree', 'ostree_url_port')}
+ 
+     if args.debug:
+         LOG_LEVEL = logging.DEBUG

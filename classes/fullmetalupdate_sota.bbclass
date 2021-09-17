@@ -23,6 +23,7 @@ OSTREE_INITRAMFS_FSTYPES ??= "${@oe.utils.ifelse(d.getVar('OSTREE_BOOTLOADER', T
 
 # Please redefine OSTREE_REPO in order to have a persistent OSTree repo
 OSTREE_REPO = "${DEPLOY_DIR_IMAGE}/ostree_repo"
+OSTREE_OSNAME = "os"
 OSTREE_INITRAMFS_IMAGE = "initramfs-ostree-image"
 OSTREE_BOOTLOADER = 'u-boot'
 
