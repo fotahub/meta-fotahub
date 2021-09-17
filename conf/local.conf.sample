@@ -27,5 +27,3 @@ OSTREE_BRANCHNAME ?= "fullmetalupdate-os-${MACHINE}"
 
 PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 PREFERRED_VERSION_fullmetalupdate = "2.0.1"
-
-DISTRO_FEATURES_append = " systemd"
