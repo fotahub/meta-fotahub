@@ -140,7 +140,7 @@ ostree_remote_add() {
     
     # Make sure OSTree uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
-    if [ -n "$OSTREE_CACERT" ]; then
+    if [ -n "${OSTREE_CACERT}" ]; then
         echo "tls-ca-path=${OSTREE_CACERT}" >> ${ostree_repo}/config
     fi
 }
@@ -177,7 +177,7 @@ curl_post() {
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt
 
     # Add -v or --verbose option to debug underlying HTTP requests/responses
-    if [ -n "$HAWKBIT_CACERT" ]; then
+    if [ -n "${HAWKBIT_CACERT}" ]; then
         cert_opts="--cacert ${HAWKBIT_CACERT}"
     fi
     curl "${HAWKBIT_HTTP_ADDRESS}/rest/v1/softwaremodules/${hawkbit_rest}" ${cert_opts} -i --user admin:admin -H "Content-Type: application/hal+json;charset=UTF-8" -d "${hawkbit_data}"
