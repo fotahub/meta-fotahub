@@ -1,7 +1,6 @@
 MACHINE ??= '{{machine}}'
 DISTRO ?= 'poky'
 PACKAGE_CLASSES ?= "package_rpm"
-EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 BB_DISKMON_DIRS ??= "\
@@ -27,3 +26,8 @@ OSTREE_BRANCHNAME ?= "fullmetalupdate-os-${MACHINE}"
 
 PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 PREFERRED_VERSION_fullmetalupdate = "2.0.1"
+
+INHERIT += "extrausers"
+EXTRA_USERS_PARAMS = "usermod -P root root;"
+
+ROOTFS_POSTPROCESS_COMMAND += "ssh_allow_empty_password; "
