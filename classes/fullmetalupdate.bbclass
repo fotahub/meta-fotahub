@@ -1,7 +1,6 @@
 python __anonymous() {
     import configparser
     import os
-    import urllib.request
 
     ostree_repo = d.getVar('OSTREE_REPO')
     if not ostree_repo:
@@ -37,13 +36,11 @@ python __anonymous() {
 
     if ostree_ssl:
         ostree_http_address = "https://" + ostree_hostname + ":" + ostree_url_port
-        urllib.request.urlretrieve(ostree_cacert, os.path.basename(ostree_cacert))
     else:
         ostree_http_address = "http://" + ostree_hostname + ":" + ostree_url_port
 
     if hawkbit_ssl:
         hawkbit_http_address = "https://" + hawkbit_hostname + ":" + hawkbit_url_port
-        urllib.request.urlretrieve(hawkbit_cacert, os.path.basename(hawkbit_cacert))
     else:
         hawkbit_http_address = "http://" + hawkbit_hostname + ":" + hawkbit_url_port
 
@@ -53,11 +50,11 @@ python __anonymous() {
     d.setVar('HAWKBIT_HOSTNAME', hawkbit_hostname)
     d.setVar('HAWKBIT_URL_PORT', hawkbit_url_port)
     if hawkbit_ssl:
-        d.setVar('HAWKBIT_CACERT', os.getcwd() + '/' + os.path.basename(hawkbit_cacert))
+        d.setVar('HAWKBIT_CACERT', '/etc/ssl/certs/' + hawkbit_cacert)
     d.setVar('OSTREE_HOSTNAME', ostree_hostname)
     d.setVar('OSTREE_URL_PORT', ostree_url_port)
     if ostree_ssl:
-        d.setVar('OSTREE_CACERT', os.getcwd() + '/' + os.path.basename(ostree_cacert))
+        d.setVar('OSTREE_CACERT', '/etc/ssl/certs/' + ostree_cacert)
     d.setVar('OSTREEPUSH_SSH_PORT', ostreepush_ssh_port)
     d.setVar('OSTREEPUSH_SSH_USER', ostreepush_ssh_user)
     d.setVar('OSTREEPUSH_SSH_PWD', ostreepush_ssh_pwd)
