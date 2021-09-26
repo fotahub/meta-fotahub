@@ -133,13 +133,12 @@ ostree_remote_add() {
     local ostree_branch="$2"
     local ostree_http_address="$3"
     
-    ostree remote add --no-gpg-verify ${ostree_branch} ${ostree_http_address} --repo=${ostree_repo}
-    
     # Make sure OSTree uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
     if [ -n "${OSTREE_CACERT}" ]; then
-        echo "tls-ca-path=${OSTREE_CACERT}" >> ${ostree_repo}/config
+        config_opts="--set=tls-ca-path=${OSTREE_CACERT}"
     fi
+    ostree remote add ${config_opts} --no-gpg-verify ${ostree_branch} ${ostree_http_address} --repo=${ostree_repo}
 }
 
 ostree_remote_delete() {
