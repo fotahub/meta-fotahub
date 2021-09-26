@@ -1,0 +1,1 @@
+CONTAINER_STARTUP := "${THISDIR}/files/entry.sh"
