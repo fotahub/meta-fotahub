@@ -1,6 +1,7 @@
 MACHINE ??= '{{machine}}'
 DISTRO ?= 'poky'
 PACKAGE_CLASSES ?= "package_rpm"
+EXTRA_IMAGE_FEATURES ?= "allow-empty-password"
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 BB_DISKMON_DIRS ??= "\
@@ -29,5 +30,3 @@ PREFERRED_VERSION_fullmetalupdate = "2.0.1"
 
 INHERIT += "extrausers"
 EXTRA_USERS_PARAMS = "usermod -P root root;"
-
-ROOTFS_POSTPROCESS_COMMAND += "ssh_allow_empty_password; "
