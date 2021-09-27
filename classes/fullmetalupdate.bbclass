@@ -1,3 +1,5 @@
+SYSTEM_CACERT_BUNDLE ?= "/etc/ssl/certs/ca-certificates.crt"
+
 python __anonymous() {
     import configparser
     import os
@@ -24,11 +26,9 @@ python __anonymous() {
     hawkbit_vendor_name = config['client']['hawkbit_vendor_name']
     hawkbit_url_port = config['client']['hawkbit_url_port']
     hawkbit_ssl = config['client'].getboolean('hawkbit_ssl', fallback=False)
-    hawkbit_cacert = config['client']['hawkbit_cacert']
     ostree_hostname = config['ostree']['ostree_hostname']
     ostree_gpg_verify = config['ostree'].getboolean('ostree_gpg-verify', fallback=False)
     ostree_ssl = config['ostree'].getboolean('ostree_ssl', fallback=False)
-    ostree_cacert = config['ostree']['ostree_cacert']
     ostree_url_port = config['ostree']['ostree_url_port']
     ostreepush_ssh_port = config['ostree']['ostreepush_ssh_port']
     ostreepush_ssh_user = config['ostree']['ostreepush_ssh_user']
@@ -50,11 +50,13 @@ python __anonymous() {
     d.setVar('HAWKBIT_HOSTNAME', hawkbit_hostname)
     d.setVar('HAWKBIT_URL_PORT', hawkbit_url_port)
     if hawkbit_ssl:
-        d.setVar('HAWKBIT_CACERT', '/etc/ssl/certs/' + hawkbit_cacert)
+        d.setVar('HAWKBIT_SSL', 'y')
     d.setVar('OSTREE_HOSTNAME', ostree_hostname)
     d.setVar('OSTREE_URL_PORT', ostree_url_port)
+    if ostree_gpg_verify:
+        d.setVar('OSTREE_GPG_VERIFY', 'y')
     if ostree_ssl:
-        d.setVar('OSTREE_CACERT', '/etc/ssl/certs/' + ostree_cacert)
+        d.setVar('OSTREE_SSL', 'y')
     d.setVar('OSTREEPUSH_SSH_PORT', ostreepush_ssh_port)
     d.setVar('OSTREEPUSH_SSH_USER', ostreepush_ssh_user)
     d.setVar('OSTREEPUSH_SSH_PWD', ostreepush_ssh_pwd)
@@ -135,10 +137,15 @@ ostree_remote_add() {
     
     # Make sure OSTree uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
-    if [ -n "${OSTREE_CACERT}" ]; then
-        config_opts="--set=tls-ca-path=${OSTREE_CACERT}"
+    if [ ! -z "${OSTREE_SSL}" ]; then
+        config_opts="--set=tls-ca-path=${SYSTEM_CACERT_BUNDLE}"
     fi
-    ostree remote add ${config_opts} --no-gpg-verify ${ostree_branch} ${ostree_http_address} --repo=${ostree_repo}
+
+    if [ -z "${OSTREE_GPG_VERIFY}" ]; then
+        gpg_opts="--no-gpg-verify"
+    fi
+    
+    ostree remote add ${config_opts} ${gpg_opts} ${ostree_branch} ${ostree_http_address} --repo=${ostree_repo}
 }
 
 ostree_remote_delete() {
@@ -173,8 +180,8 @@ curl_post() {
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt
 
     # Add -v or --verbose option to debug underlying HTTP requests/responses
-    if [ -n "${HAWKBIT_CACERT}" ]; then
-        cert_opts="--cacert ${HAWKBIT_CACERT}"
+    if [ ! -z "${HAWKBIT_SSL}" ]; then
+        cert_opts="--cacert ${SYSTEM_CACERT_BUNDLE}"
     fi
     curl "${HAWKBIT_HTTP_ADDRESS}/rest/v1/softwaremodules/${hawkbit_rest}" ${cert_opts} -i --user admin:admin -H "Content-Type: application/hal+json;charset=UTF-8" -d "${hawkbit_data}"
 }
