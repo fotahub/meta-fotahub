@@ -54,5 +54,8 @@ bootcmd=echo "Entering FotaHub boot script..."; \
         saveenv; \
     else \
         echo "No OS update in progress - booting normally..."; \
+        if test ! -e mmc ${bootmmc} uboot.env; then \
+            saveenv; \
+        fi \
     fi \
     run bootcmd_boot
