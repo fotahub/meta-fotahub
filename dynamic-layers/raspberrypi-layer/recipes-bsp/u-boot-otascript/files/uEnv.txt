@@ -1,13 +1,12 @@
-bootmmc=0:2
+bootmmc=0:1
+imgmmc=0:2
 
-bootcmd_load_ostree_env=ext2load mmc ${bootmmc} $loadaddr /boot/loader/uEnv.txt; env import -t $loadaddr $filesize
+bootcmd_load_ostree_env=ext2load mmc ${imgmmc} $loadaddr /boot/loader/uEnv.txt; env import -t $loadaddr $filesize
 
-args_root=ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1
-args_extra=
-bootcmd_args=setenv bootargs ${bootargs} ${args_root} ${args_extra}
+bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1"
 
-load_kernel=ext2load mmc ${bootmmc} $kernel_addr_r "/boot"$kernel_image
-load_ramdisk=ext2load mmc ${bootmmc} $ramdisk_addr_r "/boot"$ramdisk_image
+load_kernel=ext2load mmc ${imgmmc} $kernel_addr_r "/boot"$kernel_image
+load_ramdisk=ext2load mmc ${imgmmc} $ramdisk_addr_r "/boot"$ramdisk_image
 bootcmd_load=run load_kernel; run load_ramdisk
 
 bootcmd_run=bootm $kernel_addr_r $ramdisk_addr_r
@@ -27,13 +26,13 @@ bootcmd_stage_previous_os=if env exists bootargs2; then \
 bootcmd=echo "Entering FotaHub boot script..."; \
     run bootcmd_load_ostree_env; \
     if env exists os_update_activated; then \
-        if env exists $os_update_confirmed; then \
+        if env exists os_update_confirmed; then \
             echo "OS update confirmed - booting normally..."; \
             setenv os_update_activated; \
-            setenv os_update_confirmed; \ 
+            setenv os_update_confirmed; \
             setenv os_update_boot_count; \
         else \
-            if test $os_update_boot_count = 5; then
+            if test $os_update_boot_count = 5; then \
                 echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
                 setenv os_update_activated; \
                 setenv os_update_boot_count; \
@@ -53,7 +52,7 @@ bootcmd=echo "Entering FotaHub boot script..."; \
         setenv os_update_boot_count; \
         run bootcmd_stage_previous_os; \
         saveenv; \
-    else \ 
+    else \
         echo "No OS update in progress - booting normally..."; \
     fi \
     run bootcmd_boot
