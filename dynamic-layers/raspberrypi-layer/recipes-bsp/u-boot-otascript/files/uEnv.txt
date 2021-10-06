@@ -23,40 +23,27 @@ bootcmd_stage_previous_os=if env exists bootargs2; then \
         exit; \
     fi
 
-bootcmd_reset_os_update_state=setenv os_update_activated; \
-    setenv os_update_confirmed; \
-    setenv os_update_reverted; \
-    setenv os_update_boot_count 0
-
 bootcmd=echo "Entering FotaHub boot script..."; \
     run bootcmd_load_ostree_env; \
-    if env exists os_update_activated; then \
-        if env exists os_update_confirmed; then \
-            echo "OS update confirmed - booting normally..."; \
-            run bootcmd_reset_os_update_state; \
-        elif env exists os_update_reverted; then \
-            echo "OS updated reverted - restoring previous OS version..."; \
-            run bootcmd_reset_os_update_state; \
+    if env exists activating_os_update; then \
+        if test $os_update_boot_failure_credit = 0; then \
+            echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
+            setenv activating_os_update; \
+            setenv os_update_boot_failure_credit; \
             run bootcmd_stage_previous_os; \
         else \
-            if test $os_update_boot_count = 5; then \
-                echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
-                run bootcmd_reset_os_update_state; \
-                run bootcmd_stage_previous_os; \
-            else \
-                if test $os_update_boot_count > 0; then \
-                    echo "Previous attempt to boot OS update failed - retrying..."; \
-                else \
-                    echo "OS update activated, trying to boot it..."; \
-                fi \
-                setexpr os_update_boot_count $os_update_boot_count + 1; \
-            fi \
+            echo "OS update activated - trying to boot it..."; \
+            setexpr os_update_boot_failure_credit $os_update_boot_failure_credit - 1; \
         fi \
+        saveenv; \
+    elif env exists reverting_os_update; then \
+        echo "OS updated reverted - restoring previous OS version..."; \
+        setenv reverting_os_update; \
+        run bootcmd_stage_previous_os; \
         saveenv; \
     else \
         echo "No OS update in progress - booting normally..."; \
         if test ! -e mmc ${bootmmc} uboot.env; then \
-            run bootcmd_reset_os_update_state; \
             saveenv; \
         fi \
     fi \
