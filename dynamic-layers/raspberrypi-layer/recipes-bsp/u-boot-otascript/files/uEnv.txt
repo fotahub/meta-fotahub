@@ -26,15 +26,15 @@ bootcmd_stage_previous_os=if env exists bootargs2; then \
 bootcmd=echo "Entering FotaHub boot script..."; \
     run bootcmd_load_ostree_env; \
     if env exists activating_os_update; then \
-        if test $os_update_boot_failure_credit = 0; then \
+        if test $os_update_reboot_failure_credit = 0; then \
             echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
             setenv activating_os_update; \
-            setenv os_update_boot_failure_credit; \
+            setenv os_update_reboot_failure_credit; \
             setenv reverting_os_update 1; \
             run bootcmd_stage_previous_os; \
         else \
-            echo "OS update activated - trying to boot it ($os_update_boot_failure_credit attempts remaining)..."; \
-            setexpr os_update_boot_failure_credit $os_update_boot_failure_credit - 1; \
+            echo "OS update activated - trying to boot it ($os_update_reboot_failure_credit attempts remaining)..."; \
+            setexpr os_update_reboot_failure_credit $os_update_reboot_failure_credit - 1; \
         fi \
         saveenv; \
     elif env exists reverting_os_update; then \
