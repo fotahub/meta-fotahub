@@ -1,4 +1,4 @@
-inherit fullmetalupdate
+inherit fotahub
 
 LICENSE ?= "MIT"
 

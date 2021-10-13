@@ -1,4 +1,4 @@
-inherit fullmetalupdate
+inherit fotahub
 
 # OSTree application deployment
 export OSTREE_PACKAGE_BRANCHNAME = "${PN}"

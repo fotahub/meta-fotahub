@@ -1,4 +1,4 @@
-inherit fullmetalupdate
+inherit fotahub
 
 
 do_pull_remote_ostree_image[depends] = " \

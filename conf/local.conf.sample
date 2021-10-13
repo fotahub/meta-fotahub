@@ -1,5 +1,4 @@
 MACHINE ??= '{{machine}}'
-DISTRO ?= 'poky'
 PACKAGE_CLASSES ?= "package_rpm"
 EXTRA_IMAGE_FEATURES ?= "allow-empty-password"
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
@@ -22,7 +21,6 @@ ACCEPT_FSL_EULA = "1"
 
 TMPDIR = "${TOPDIR}/tmp/${DISTRO}"
 
-OSTREE_BRANCHNAME ?= "fullmetalupdate-os-${MACHINE}"
 OSTREE_GPG_VERIFY ?= ""
 OSTREEPUSH_SSH_USER = "root"
 OSTREEPUSH_SSH_PASS = "root"
