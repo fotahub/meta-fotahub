@@ -1,72 +1,31 @@
 SYSTEM_CACERT_BUNDLE ?= "/etc/ssl/certs/ca-certificates.crt"
 
-python __anonymous() {
-    import configparser
-    import os
+OSTREE_HOSTNAME = "ostree.fotahub.com"
+OSTREE_URL_PORT = "443"
+OSTREEPUSH_SSH_PORT = "1110"
+OSTREE_HTTP_ADDRESS = "https://${OSTREE_HOSTNAME}:${OSTREE_URL_PORT}"
+OSTREE_SSH_ADDRESS = "ssh://${OSTREEPUSH_SSH_USER}@${OSTREE_HOSTNAME}:${OSTREEPUSH_SSH_PORT}/ostree/repo"
+OSTREE_GPG_VERIFY ?= ""
+OSTREE_MIRROR_PULL_RETRIES = "10"
+OSTREE_MIRROR_PULL_DEPTH = "0"
+OSTREE_CONTAINER_PULL_DEPTH = "1"
 
+python __anonymous() {
     ostree_repo = d.getVar('OSTREE_REPO')
     if not ostree_repo:
         bb.fatal("OSTREE_REPO should be set in your local.conf")
 
-    ostree_repo = d.getVar('OSTREE_BRANCHNAME')
-    if not ostree_repo:
+    ostree_branch_name = d.getVar('OSTREE_BRANCHNAME')
+    if not ostree_branch_name:
         bb.fatal("OSTREE_BRANCHNAME should be set in your local.conf")
 
-    config_file = d.getVar('HAWKBIT_CONFIG_FILE')
-    if not config_file:
-        bb.fatal("Please export/define HAWKBIT_CONFIG_FILE")
-
-    if not os.path.isfile(config_file):
-        bb.fatal("HAWKBIT_CONFIG_FILE(" + config_file + ") is not a file, please fix the path" , config_file)
-
-    config = configparser.ConfigParser()
-    config.read(config_file)
-
-    hawkbit_hostname = config['client']['hawkbit_hostname']
-    hawkbit_vendor_name = config['client']['hawkbit_vendor_name']
-    hawkbit_url_port = config['client']['hawkbit_url_port']
-    hawkbit_ssl = config['client'].getboolean('hawkbit_ssl', fallback=False)
-    ostree_hostname = config['ostree']['ostree_hostname']
-    ostree_gpg_verify = config['ostree'].getboolean('ostree_gpg-verify', fallback=False)
-    ostree_ssl = config['ostree'].getboolean('ostree_ssl', fallback=False)
-    ostree_url_port = config['ostree']['ostree_url_port']
-    ostreepush_ssh_port = config['ostree']['ostreepush_ssh_port']
-    ostreepush_ssh_user = config['ostree']['ostreepush_ssh_user']
-    ostreepush_ssh_pwd = config['ostree']['ostreepush_ssh_pwd']
-
-    if ostree_ssl:
-        ostree_http_address = "https://" + ostree_hostname + ":" + ostree_url_port
-    else:
-        ostree_http_address = "http://" + ostree_hostname + ":" + ostree_url_port
-
-    if hawkbit_ssl:
-        hawkbit_http_address = "https://" + hawkbit_hostname + ":" + hawkbit_url_port
-    else:
-        hawkbit_http_address = "http://" + hawkbit_hostname + ":" + hawkbit_url_port
-
-    ostree_ssh_address = "ssh://" + ostreepush_ssh_user + "@" + ostree_hostname + ":" + ostreepush_ssh_port + "/ostree/repo"
-
-    d.setVar('HAWKBIT_VENDOR_NAME', hawkbit_vendor_name)
-    d.setVar('HAWKBIT_HOSTNAME', hawkbit_hostname)
-    d.setVar('HAWKBIT_URL_PORT', hawkbit_url_port)
-    if hawkbit_ssl:
-        d.setVar('HAWKBIT_SSL', 'y')
-    d.setVar('OSTREE_HOSTNAME', ostree_hostname)
-    d.setVar('OSTREE_URL_PORT', ostree_url_port)
-    if ostree_gpg_verify:
-        d.setVar('OSTREE_GPG_VERIFY', 'y')
-    if ostree_ssl:
-        d.setVar('OSTREE_SSL', 'y')
-    d.setVar('OSTREEPUSH_SSH_PORT', ostreepush_ssh_port)
-    d.setVar('OSTREEPUSH_SSH_USER', ostreepush_ssh_user)
-    d.setVar('OSTREEPUSH_SSH_PWD', ostreepush_ssh_pwd)
-    d.setVar('OSTREE_HTTP_ADDRESS', ostree_http_address)
-    d.setVar('OSTREE_SSH_ADDRESS', ostree_ssh_address)
-    d.setVar('HAWKBIT_HTTP_ADDRESS', hawkbit_http_address)
-
-    d.setVar('OSTREE_MIRROR_PULL_RETRIES', "10")
-    d.setVar('OSTREE_MIRROR_PULL_DEPTH', "0")
-    d.setVar('OSTREE_CONTAINER_PULL_DEPTH', "1")
+    ostree_ssh_user = d.getVar('OSTREEPUSH_SSH_USER')
+    if not ostree_ssh_user:
+        bb.fatal("OSTREEPUSH_SSH_USER should be set in your local.conf")
+ 
+    ostree_ssh_pass = d.getVar('OSTREEPUSH_SSH_PASS')
+    if not ostree_ssh_pass:
+        bb.fatal("OSTREEPUSH_SSH_PASS should be set in your local.conf")
 }
 
 ostree_init() {
@@ -91,7 +50,7 @@ ostree_push() {
     local ostree_branch="$2"
 
     bbnote "Push the build result to the remote OSTREE"
-    sshpass -p ${OSTREEPUSH_SSH_PWD} ostree-push --repo ${ostree_repo} ${OSTREE_SSH_ADDRESS} ${ostree_branch}
+    sshpass -p ${OSTREEPUSH_SSH_PASS} ostree-push --repo ${ostree_repo} ${OSTREE_SSH_ADDRESS} ${ostree_branch}
 }
 
 ostree_pull() {
@@ -137,9 +96,7 @@ ostree_remote_add() {
     
     # Make sure OSTree uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
-    if [ ! -z "${OSTREE_SSL}" ]; then
-        config_opts="--set=tls-ca-path=${SYSTEM_CACERT_BUNDLE}"
-    fi
+    config_opts="--set=tls-ca-path=${SYSTEM_CACERT_BUNDLE}"
 
     if [ -z "${OSTREE_GPG_VERIFY}" ]; then
         gpg_opts="--no-gpg-verify"
@@ -170,25 +127,4 @@ ostree_remote_add_if_not_present() {
     if ! ostree_is_remote_present ${ostree_repo} ${ostree_branch}; then
         ostree_remote_add ${ostree_repo} ${ostree_branch} ${ostree_http_address}
     fi
-}
-
-curl_post() {
-    local hawkbit_rest="$1"
-    local hawkbit_data="$2"
-    
-    # Make sure cURL uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
-    # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt
-
-    # Add -v or --verbose option to debug underlying HTTP requests/responses
-    if [ ! -z "${HAWKBIT_SSL}" ]; then
-        cert_opts="--cacert ${SYSTEM_CACERT_BUNDLE}"
-    fi
-    curl "${HAWKBIT_HTTP_ADDRESS}/rest/v1/softwaremodules/${hawkbit_rest}" ${cert_opts} -i --user admin:admin -H "Content-Type: application/hal+json;charset=UTF-8" -d "${hawkbit_data}"
-}
-
-hawkbit_metadata_value() {
-    local key="$1"
-    local value="$2"
-
-    echo '[ { "targetVisible" : true, "value" : "'${value}'", "key" : "'${key}'" } ]'
 }

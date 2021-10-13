@@ -22,11 +22,12 @@ ACCEPT_FSL_EULA = "1"
 
 TMPDIR = "${TOPDIR}/tmp/${DISTRO}"
 
-HAWKBIT_CONFIG_FILE ?= "${SOURCES_DIR}/meta-fotahub/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg"
 OSTREE_BRANCHNAME ?= "fullmetalupdate-os-${MACHINE}"
+OSTREE_GPG_VERIFY ?= ""
+OSTREEPUSH_SSH_USER = "root"
+OSTREEPUSH_SSH_PASS = "root"
 
 PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
-PREFERRED_VERSION_fullmetalupdate = "2.0.1"
 
 INHERIT += "extrausers"
 EXTRA_USERS_PARAMS = "usermod -P root root;"
