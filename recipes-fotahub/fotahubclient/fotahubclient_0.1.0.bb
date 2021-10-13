@@ -33,33 +33,32 @@ RDEPENDS_${PN} += " \
 "
 
 SRCREV = "36c3c1e0b43097d5a4b9e027b6064fca8f41cdc5"
-SRC_URI += "git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main"
+SRC_URI += " \
+    git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
+    file://fotahubd.service \
+"
 
 # Redefine unpacked recipe source code location (S) according to the Git fetcher's default checkout location (destsuffix)
 # (see https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-fetching.html#git-fetcher-git for details)
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
 
 OSTREE_CONFIG_PATH ?= "/etc/fotahub/fotahub.config"
 
 FILES_${PN} += " \
     ${base_prefix}${OSTREE_CONFIG_PATH} \
+    ${systemd_system_unitdir}/fotahubd.service \
 "
+
+SYSTEMD_SERVICE_${PN} = "fotahubd.service"
 
 inherit systemd setuptools3
 
 do_install_append() {
     install -d ${D}${base_prefix}$(dirname ${OSTREE_CONFIG_PATH})
-    sed "s#\(gpg.verify\s*=\s*\)[a-zA-Z]\+#\1`if [ -n "${OSTREE_GPG_VERIFY}" ]; then echo "true"; else echo "false"; fi`#" ${S}fotahub.config.sample > ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed "s#\(gpg.verify\s*=\s*\)[a-zA-Z]\+#\1`if [ -n "${OSTREE_GPG_VERIFY}" ]; then echo "true"; else echo "false"; fi`#" ${S}/fotahub.config.sample > ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     chmod 755 ${D}${base_prefix}${OSTREE_CONFIG_PATH}
 
-    #install -d ${D}${systemd_system_unitdir}
-    #sed "s#\(--config \)[a-zA-Z/\.]\+#\1${OSTREE_CONFIG_PATH}#" ${S}fotahubclient-daemon/fotahubd.service > ${D}${systemd_system_unitdir}/fotahubd.service
-    #chmod 644 ${D}${systemd_system_unitdir}/fotahubd.service
-
-# FILES_${PN} += " \
-#     ${base_prefix}${OSTREE_CONFIG_PATH} \
-#     ${base_prefix}${systemd_system_unitdir}/fotahubd.service \
-# "
-
-# SYSTEMD_SERVICE_${PN} = "fotahubd.service"
+    install -d ${D}${systemd_system_unitdir}
+    sed "s#{{config}}#${OSTREE_CONFIG_PATH}#" ${WORKDIR}/fotahubd.service > ${D}${systemd_system_unitdir}/fotahubd.service
+    chmod 644 ${D}${systemd_system_unitdir}/fotahubd.service
 }

@@ -1,0 +1,10 @@
+[Unit]
+Description = FotaHub Client daemon
+After = network.target
+
+[Service]
+WorkingDirectory = /usr/rootdirs/bin
+ExecStart = fotahub --config {{config}} finish-operating-system-change
+
+[Install]
+WantedBy = multi-user.target
