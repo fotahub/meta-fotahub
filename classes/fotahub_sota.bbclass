@@ -1,10 +1,15 @@
+python __anonymous() {
+    if bb.utils.contains('DISTRO_FEATURES', 'sota', True, False, d):
+        d.appendVarFlag("do_image_wic", "depends", " %s:do_image_otaimg" % d.getVar("IMAGE_BASENAME", True))
+}
+
 OVERRIDES .= "${@bb.utils.contains('DISTRO_FEATURES', 'sota', ':sota', '', d)}"
 
 HOSTTOOLS_NONFATAL += "java"
 
 IMAGE_INSTALL_append_sota = " ostree os-release"
-IMAGE_CLASSES += " image_types_ostree"
-IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush wic', ' ', d)}"
+IMAGE_CLASSES += " image_types_ostree image_types_ota"
+IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush otaimg wic', ' ', d)}"
 
 PACKAGECONFIG_append_pn-curl = " ssl"
 PACKAGECONFIG_remove_pn-curl = "gnutls"

@@ -1,6 +1,16 @@
 MACHINE ??= '{{machine}}'
 PACKAGE_CLASSES ?= "package_rpm"
-EXTRA_IMAGE_FEATURES ?= "allow-empty-password"
+
+# Set root password
+INHERIT += "extrausers"
+EXTRA_USERS_PARAMS = "usermod -P root root;"
+
+# Comment this line to disable SSH server on target
+EXTRA_IMAGE_FEATURES += "ssh-server-dropbear"
+
+# Comment this line to disable SSH-ing into target as root 
+EXTRA_IMAGE_FEATURES += "allow-empty-password"
+
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 BB_DISKMON_DIRS ??= "\
@@ -27,5 +37,5 @@ OSTREEPUSH_SSH_PASS = "root"
 
 PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 
-INHERIT += "extrausers"
-EXTRA_USERS_PARAMS = "usermod -P root root;"
+# Uncommend to add some extra packages to OS image
+# IMAGE_INSTALL_append = " nano figlet pv"

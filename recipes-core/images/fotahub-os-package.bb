@@ -16,8 +16,6 @@ IMAGE_INSTALL = " \
     busybox-udhcpc \
     fotahubclient \
 "
-IMAGE_FEATURES += "ssh-server-dropbear"
-IMAGE_FEATURES_REPLACES_ssh-server-openssh = "ssh-server-dropbear"
 
 DISTRO_FEATURES_append = " systemd"
 VIRTUAL-RUNTIME_init_manager = "systemd"
