@@ -37,5 +37,5 @@ OSTREEPUSH_SSH_PASS = "root"
 
 PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 
-# Uncommend to add some extra packages to OS image
+# Uncomment to add some extra packages to OS image
 # IMAGE_INSTALL_append = " nano figlet pv"
