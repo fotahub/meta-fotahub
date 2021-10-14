@@ -5,8 +5,6 @@ python __anonymous() {
 
 OVERRIDES .= "${@bb.utils.contains('DISTRO_FEATURES', 'sota', ':sota', '', d)}"
 
-HOSTTOOLS_NONFATAL += "java"
-
 IMAGE_INSTALL_append_sota = " ostree os-release"
 IMAGE_CLASSES += " image_types_ostree image_types_ota"
 IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush otaimg wic', ' ', d)}"

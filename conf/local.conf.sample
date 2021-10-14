@@ -1,5 +1,6 @@
+CONF_VERSION = "1"
+
 MACHINE ??= '{{machine}}'
-PACKAGE_CLASSES ?= "package_rpm"
 
 # Set root password
 INHERIT += "extrausers"
@@ -11,31 +12,11 @@ EXTRA_IMAGE_FEATURES += "ssh-server-dropbear"
 # Comment this line to disable SSH-ing into target as root 
 EXTRA_IMAGE_FEATURES += "allow-empty-password"
 
-USER_CLASSES ?= "buildstats image-mklibs image-prelink"
-PATCHRESOLVE = "noop"
-BB_DISKMON_DIRS ??= "\
-    STOPTASKS,${TMPDIR},1G,100K \
-    STOPTASKS,${DL_DIR},1G,100K \
-    STOPTASKS,${SSTATE_DIR},1G,100K \
-    STOPTASKS,/tmp,100M,100K \
-    ABORT,${TMPDIR},100M,1K \
-    ABORT,${DL_DIR},100M,1K \
-    ABORT,${SSTATE_DIR},100M,1K \
-    ABORT,/tmp,10M,1K"
-PACKAGECONFIG_append_pn-qemu-native = " sdl"
-PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
-CONF_VERSION = "1"
-HOSTTOOLS_NONFATAL += " ostree ostree-push sshpass"
 DL_DIR ?= "{{downloads}}"
-ACCEPT_FSL_EULA = "1"
-
-TMPDIR = "${TOPDIR}/tmp/${DISTRO}"
 
 OSTREE_GPG_VERIFY ?= ""
 OSTREEPUSH_SSH_USER = "root"
 OSTREEPUSH_SSH_PASS = "root"
-
-PREFERRED_RPROVIDER_virtual/network-configuration ?= "connman"
 
 # Uncomment to add some extra packages to OS image
 # IMAGE_INSTALL_append = " nano figlet pv"
