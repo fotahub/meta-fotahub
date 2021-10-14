@@ -56,9 +56,9 @@ inherit systemd setuptools3
 do_install_append() {
     install -d ${D}${base_prefix}$(dirname ${OSTREE_CONFIG_PATH})
     sed "s#\(gpg.verify\s*=\s*\)[a-zA-Z]\+#\1`if [ -n "${OSTREE_GPG_VERIFY}" ]; then echo "true"; else echo "false"; fi`#" ${S}/fotahub.config.sample > ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    chmod 755 ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    chmod 0644 ${D}${base_prefix}${OSTREE_CONFIG_PATH}
 
     install -d ${D}${systemd_system_unitdir}
     sed "s#{{config}}#${OSTREE_CONFIG_PATH}#" ${WORKDIR}/fotahubd.service > ${D}${systemd_system_unitdir}/fotahubd.service
-    chmod 644 ${D}${systemd_system_unitdir}/fotahubd.service
+    chmod 0644 ${D}${systemd_system_unitdir}/fotahubd.service
 }
