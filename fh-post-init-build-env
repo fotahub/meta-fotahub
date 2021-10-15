@@ -19,10 +19,11 @@ get_machine_layer_name()
 
 show_usage()
 {
-  echo
-  echo "Usage: $(basename $0) <machine>"
-  echo
-  exit 1
+  cat << EOF
+
+Usage: $(basename $0) <machine>
+
+EOF
 }
 
 main()
@@ -38,12 +39,22 @@ main()
     exit 1
   fi
 
-  # Finish project build configuration
+  # Finish up Yocto build configuration
   MACHINE_LAYER_NAME=$(get_machine_layer_name $MACHINE)
-  sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" $PWD/conf/bblayers.conf
-  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" $PWD/conf/bblayers.conf
-  sed -i "s@{{machine}}@$MACHINE@" $PWD/conf/local.conf
-  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" $PWD/conf/local.conf
+  sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$PWD/conf/bblayers.conf"
+  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" "$PWD/conf/bblayers.conf"
+  sed -i "s@{{machine}}@$MACHINE@" "$PWD/conf/local.conf"
+  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" "$PWD/conf/local.conf"
+
+  # Move newly generated Yocto build configuration files to project, if any, and sym-link them back 
+  if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf"  ]; then
+    mv "$PWD/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf/bblayers.conf"
+    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$PWD/conf/bblayers.conf"
+  fi
+  if [ ! -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
+    mv "$PWD/conf/local.conf" "$YOCTO_PROJECT_DIR/conf/local.conf"
+    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$PWD/conf/local.conf"
+  fi
 
   # Replace nonexistent sym-linked Full Metal Update server configuration with empty but existing fake configuration file
   rm $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg

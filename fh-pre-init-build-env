@@ -2,10 +2,11 @@
 
 show_usage()
 {
-  echo
-  echo "Usage: $(basename $0) <machine>"
-  echo
-  exit 1
+  cat << EOF
+
+Usage: $(basename $0) <machine>
+
+EOF
 }
 
 main()
@@ -16,7 +17,15 @@ main()
   fi
   local MACHINE="$1"
 
-  export TEMPLATECONF=$YOCTO_SOURCES_DIR/meta-fotahub/conf
+  export TEMPLATECONF="$YOCTO_SOURCES_DIR/meta-fotahub/conf"
+
+  # Sym-link existing project-side Yocto build configuration files, if any
+  if [ ! -f "$PWD/conf/bblayers.conf" && -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf" ]; then
+    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$PWD/conf/bblayers.conf"
+  fi
+  if [ ! -f "$PWD/conf/local.conf" && -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
+    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$PWD/conf/local.conf"
+  fi
 }
 
 main $@
