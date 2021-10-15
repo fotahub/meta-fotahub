@@ -5,7 +5,7 @@ OSTREE_URL_PORT = "443"
 OSTREEPUSH_SSH_PORT = "1110"
 OSTREE_HTTP_ADDRESS = "https://${OSTREE_HOSTNAME}:${OSTREE_URL_PORT}"
 OSTREE_SSH_ADDRESS = "ssh://${OSTREEPUSH_SSH_USER}@${OSTREE_HOSTNAME}:${OSTREEPUSH_SSH_PORT}/ostree/repo"
-OSTREE_GPG_VERIFY ?= ""
+OSTREE_GPG_VERIFY ?= "false"
 OSTREE_MIRROR_PULL_RETRIES = "10"
 OSTREE_MIRROR_PULL_DEPTH = "0"
 OSTREE_CONTAINER_PULL_DEPTH = "1"
@@ -98,7 +98,7 @@ ostree_remote_add() {
     # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
     config_opts="--set=tls-ca-path=${SYSTEM_CACERT_BUNDLE}"
 
-    if [ -z "${OSTREE_GPG_VERIFY}" ]; then
+    if [ "${OSTREE_GPG_VERIFY}" != "true" ]; then
         gpg_opts="--no-gpg-verify"
     fi
     

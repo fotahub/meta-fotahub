@@ -27,10 +27,10 @@ FILES_${PN} += " \
 do_install() {
     install -d ${D}${bindir}
     install -d ${D}${DEFAULTFONTDIR}
-    install -m 0755 figlet ${D}${bindir}
-    install -m 0755 chkfont ${D}${bindir}
-    install -m 0755 figlist ${D}${bindir}
-    install -m 0755 showfigfonts ${D}${bindir}
+    install -m 0755 ${S}/figlet ${D}${bindir}
+    install -m 0755 ${S}/chkfont ${D}${bindir}
+    install -m 0755 ${S}/figlist ${D}${bindir}
+    install -m 0755 ${S}/showfigfonts ${D}${bindir}
     install -m 0644 ${S}/fonts/*.flf ${D}${DEFAULTFONTDIR}
 }
 

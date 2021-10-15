@@ -32,7 +32,7 @@ RDEPENDS_${PN} += " \
     python3-stringcase \
 "
 
-SRCREV = "c094ee21461d37ab0ef5fcb278e6b48ea591da87"
+SRCREV = "bf8344ccd9763d64ef7d3a704ee8a004d86c9c05"
 SRC_URI += " \
     git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
@@ -55,10 +55,14 @@ inherit systemd setuptools3
 
 do_install_append() {
     install -d ${D}${base_prefix}$(dirname ${OSTREE_CONFIG_PATH})
-    sed "s#\(gpg.verify\s*=\s*\)[a-zA-Z]\+#\1`if [ -n "${OSTREE_GPG_VERIFY}" ]; then echo "true"; else echo "false"; fi`#" ${S}/fotahub.config.sample > ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    chmod 0644 ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    install -m 0644 ${S}/fotahub.config.sample ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(GPGVerify\s*=\).\+@\1 ${OSTREE_GPG_VERIFY}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 ${APP_DIRECTORY}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
 
     install -d ${D}${systemd_system_unitdir}
-    sed "s#{{config}}#${OSTREE_CONFIG_PATH}#" ${WORKDIR}/fotahubd.service > ${D}${systemd_system_unitdir}/fotahubd.service
-    chmod 0644 ${D}${systemd_system_unitdir}/fotahubd.service
+    install -m 0644 ${WORKDIR}/fotahubd.service ${D}${systemd_system_unitdir}/fotahubd.service
+    sed -i "s@{{config}}@${OSTREE_CONFIG_PATH}@" ${D}${systemd_system_unitdir}/fotahubd.service
 }
