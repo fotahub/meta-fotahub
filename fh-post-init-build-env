@@ -48,11 +48,12 @@ main()
 
   # Move newly generated Yocto build configuration files to project, if any, and sym-link them back 
   if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf"  ]; then
-    mv "$PWD/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf/bblayers.conf"
+    mkdir -p "$YOCTO_PROJECT_DIR/conf"
+    mv "$PWD/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf"
     ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$PWD/conf/bblayers.conf"
   fi
   if [ ! -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
-    mv "$PWD/conf/local.conf" "$YOCTO_PROJECT_DIR/conf/local.conf"
+    mv "$PWD/conf/local.conf" "$YOCTO_PROJECT_DIR/conf"
     ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$PWD/conf/local.conf"
   fi
 
