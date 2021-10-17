@@ -34,27 +34,27 @@ main()
   fi
   local MACHINE="$1"
 
-  if [ ! -d "$PWD/conf" ]; then
+  if [ ! -d "$YOCTO_BUILD_DIR/conf" ]; then
     echo "ERROR: The 'conf' directory does not yet exist. Run the 'oe-init-build-env' script first."
     exit 1
   fi
 
   # Finish up Yocto build configuration
   MACHINE_LAYER_NAME=$(get_machine_layer_name $MACHINE)
-  sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$PWD/conf/bblayers.conf"
-  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" "$PWD/conf/bblayers.conf"
-  sed -i "s@{{machine}}@$MACHINE@" "$PWD/conf/local.conf"
-  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" "$PWD/conf/local.conf"
+  sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+  sed -i "s@{{machine}}@$MACHINE@" "$YOCTO_BUILD_DIR/conf/local.conf"
+  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" "$YOCTO_BUILD_DIR/conf/local.conf"
 
   # Move newly generated Yocto build configuration files to project, if any, and sym-link them back 
   if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf"  ]; then
     mkdir -p "$YOCTO_PROJECT_DIR/conf"
-    mv "$PWD/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf"
-    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$PWD/conf/bblayers.conf"
+    mv "$YOCTO_BUILD_DIR/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf"
+    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   fi
   if [ ! -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
-    mv "$PWD/conf/local.conf" "$YOCTO_PROJECT_DIR/conf"
-    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$PWD/conf/local.conf"
+    mv "$YOCTO_BUILD_DIR/conf/local.conf" "$YOCTO_PROJECT_DIR/conf"
+    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$YOCTO_BUILD_DIR/conf/local.conf"
   fi
 
   # Replace nonexistent sym-linked Full Metal Update server configuration with empty but existing fake configuration file

@@ -20,18 +20,18 @@ main()
   export TEMPLATECONF="$YOCTO_SOURCES_DIR/meta-fotahub/conf"
 
   # Sym-link existing project-side Yocto build configuration files, if any
-  if [ ! -f "$PWD/conf/bblayers.conf" ] && [ -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf" ]; then
-    mkdir -p "$PWD/conf"
-    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$PWD/conf/bblayers.conf"
+  if [ ! -f "$YOCTO_BUILD_DIR/conf/bblayers.conf" ] && [ -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf" ]; then
+    mkdir -p "$YOCTO_BUILD_DIR/conf"
+    ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   fi
-  if [ ! -f "$PWD/conf/local.conf" ] && [ -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
-    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$PWD/conf/local.conf"
+  if [ ! -f "$YOCTO_BUILD_DIR/conf/local.conf" ] && [ -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
+    ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$YOCTO_BUILD_DIR/conf/local.conf"
   fi
 
   # Sym-link project-side Yocto build script into Yocto build directory 
   # (for easy use in `bind.bat bash` or `./bind.sh bash` sessions)
-  if [ -f "$YOCTO_PROJECT_DIR/build.sh" ] && [ ! -f "$PWD/build.sh" ]; then
-    ln -s "$YOCTO_PROJECT_DIR/build.sh" "$PWD/build.sh"
+  if [ -f "$YOCTO_PROJECT_DIR/build.sh" ] && [ ! -f "$YOCTO_BUILD_DIR/build.sh" ]; then
+    ln -s "$YOCTO_PROJECT_DIR/build.sh" "$YOCTO_BUILD_DIR/build.sh"
   fi
 }
 
