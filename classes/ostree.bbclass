@@ -1,14 +1,13 @@
 SYSTEM_CACERT_BUNDLE ?= "/etc/ssl/certs/ca-certificates.crt"
 
-OSTREE_HOSTNAME = "ostree.fotahub.com"
+OSTREE_HOSTNAME = "delta.fotahub.com"
 OSTREE_URL_PORT = "443"
-OSTREEPUSH_SSH_PORT = "1110"
+OSTREEPUSH_SSH_PORT = "1155"
 OSTREE_HTTP_ADDRESS = "https://${OSTREE_HOSTNAME}:${OSTREE_URL_PORT}"
 OSTREE_SSH_ADDRESS = "ssh://${OSTREEPUSH_SSH_USER}@${OSTREE_HOSTNAME}:${OSTREEPUSH_SSH_PORT}/ostree/repo"
 OSTREE_GPG_VERIFY ?= "false"
 OSTREE_MIRROR_PULL_RETRIES = "10"
 OSTREE_MIRROR_PULL_DEPTH = "0"
-OSTREE_CONTAINER_PULL_DEPTH = "1"
 
 python __anonymous() {
     ostree_repo = d.getVar('OSTREE_REPO')
@@ -95,7 +94,7 @@ ostree_remote_add() {
     local ostree_http_address="$3"
     
     # Make sure OSTree uses configured root CA certificate instead of non exisiting default root CA certificate bundle at
-    # /data/yocto/build/tmp/fullmetalupdate-containers/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
+    # /data/yocto/build/tmp/fotahub-apps/sysroots-components/x86_64/curl-native/etc/ssl/certs/ca-certificates.crt 
     config_opts="--set=tls-ca-path=${SYSTEM_CACERT_BUNDLE}"
 
     if [ "${OSTREE_GPG_VERIFY}" != "true" ]; then

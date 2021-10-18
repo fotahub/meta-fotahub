@@ -1,5 +1,4 @@
-inherit fotahub
-
+inherit ostree
 
 do_pull_remote_ostree_image[depends] = " \
     ostree-native:do_populate_sysroot \

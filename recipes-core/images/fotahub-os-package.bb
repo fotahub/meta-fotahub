@@ -24,7 +24,7 @@ VIRTUAL-RUNTIME_initscripts = ""
 
 PACKAGECONFIG_remove-pn-qtbase  = "x11 xcb xkb xkbcommon-evdev "
 
-WKS_FILES ?= "fullmetalupdate-${MACHINE}.wks.in"
+WKS_FILES ?= "fotahub-${MACHINE}.wks.in"
 
 inherit core-image
-inherit fotahub_push_os_image
+inherit push_os_image

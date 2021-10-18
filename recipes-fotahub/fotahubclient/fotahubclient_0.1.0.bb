@@ -32,7 +32,7 @@ RDEPENDS_${PN} += " \
     python3-stringcase \
 "
 
-SRCREV = "e5b257c7915cf44333efa3d2514c33d2de623b97"
+SRCREV = "2853fe1e3d6c8bfa9460a6fa51d88a74b0f6307f"
 SRC_URI += " \
     git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
@@ -60,7 +60,7 @@ do_install_append() {
     sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 ${APP_DIRECTORY}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 ${APPS_DIR}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/fotahubd.service ${D}${systemd_system_unitdir}/fotahubd.service
