@@ -47,10 +47,15 @@ do_initialize_ostree_apps[depends] = " \
 
 do_create_apps_package() {
     for app in ${PREINSTALLED_APPS}; do
-        bbnote "Add remote for ostree : ${app} ${OSTREE_HTTP_ADDRESS} ${IMAGE_ROOTFS}"
+        bbnote "Adding '${app}' remote for '${OSTREE_HTTP_ADDRESS}' to OSTree repot in ${IMAGE_ROOTFS}"
         ostree_remote_add ${IMAGE_ROOTFS}/ostree_repo ${app} ${OSTREE_HTTP_ADDRESS}
-        bbnote "Pull the app: remote ${app} branch name ${app} from the repo"
+
+        set +e
+        # Ignore errors for this command since the remote repo could be empty yet which is fully ok
+        bbnote "Pulling '${app}' application from OSTree remote '${app}'"
         ostree_pull ${IMAGE_ROOTFS}/ostree_repo ${app} ${APPS_OSTREE_PULL_DEPTH}
+        set -e
+
         echo ${app} >> ${IMAGE_ROOTFS}/${IMAGE_NAME}-apps.manifest
     done
 

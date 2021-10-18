@@ -19,9 +19,9 @@ do_push_app_to_ostree() {
     # Add missing remotes
     ostree_remote_add_if_not_present ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME} ${OSTREE_HTTP_ADDRESS}
 
-    #Pull locally the remote repo
+    # Pull locally the remote repo
     set +e
-    # Ignore error for this command, since the remote repo could be empty and we have no way to know
+    # Ignore errors for this command since the remote repo could be empty yet which is fully ok
     bbnote "Pull locally the repository: ${OSTREE_PACKAGE_BRANCHNAME}"
     ostree_pull_mirror ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME} ${OSTREE_MIRROR_PULL_DEPTH} ${OSTREE_MIRROR_PULL_RETRIES}
     set -e
@@ -37,5 +37,4 @@ do_push_app_to_ostree() {
     ostree_push ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME}
 }
 
-# do_copy_app task defined in oci_image.bbclass
 addtask do_push_app_to_ostree after do_copy_app before do_build
