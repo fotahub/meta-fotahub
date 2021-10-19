@@ -33,7 +33,7 @@ RDEPENDS_${PN} += " \
     python3-stringcase \
 "
 
-SRCREV = "802264678bd5337f19ded1e22bc4207be1cb37a2"
+SRCREV = "710a2629b128457ec3ca314da45fdf4c70e9694d"
 SRC_URI += " \
     git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
@@ -57,7 +57,7 @@ inherit systemd setuptools3
 do_install_append() {
     install -d ${D}${base_prefix}$(dirname ${OSTREE_CONFIG_PATH})
     install -m 0644 ${S}/fotahub.config.sample ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(GPGVerify\s*=\).\+@\1 ${OSTREE_GPG_VERIFY}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(OSTreeGPGVerify\s*=\).\+@\1 ${OSTREE_GPG_VERIFY}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
