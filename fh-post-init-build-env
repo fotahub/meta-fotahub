@@ -69,12 +69,8 @@ main()
     ln -s "$YOCTO_PROJECT_DIR/build.sh" "$YOCTO_BUILD_DIR/build.sh"
   fi
 
-  # Replace nonexistent sym-linked Full Metal Update server configuration with empty but existing fake configuration file
-  rm $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
-  touch $YOCTO_SOURCES_DIR/meta-fullmetalupdate/recipes-fullmetalupdate/fullmetalupdate/files/config.cfg
-  
-  # Activate suitable Full Metal Update layer configuration
-  cp $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf/$1/* $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf
+  # Activate suitable Full Metal Update Extra layer configuration
+  cp $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf/$MACHINE/layer.conf $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf
 }
 
 main $@

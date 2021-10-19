@@ -16,6 +16,7 @@
 #  This file is part of the FotaHub(R) Device SDK program (https://fotahub.com)
 #
 
+HOMEPAGE = "https://github.com/fotahub/fotahub-device-sdk-yocto"
 DESCRIPTION = "FotaHub Client daemon"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"

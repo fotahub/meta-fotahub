@@ -24,4 +24,4 @@ OSTREE_BOOT_PARTITION ??= "/boot"
 
 OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
-inherit fullmetalupdate_sota_${MACHINE}
+inherit fotahub_sota_${MACHINE}
