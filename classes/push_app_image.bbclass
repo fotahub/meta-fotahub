@@ -29,4 +29,4 @@ do_push_app_image_to_fotahub() {
     ostree_push_to_fotahub ${OSTREE_REPO} ${PN}
 }
 
-addtask do_push_app_image_to_fotahub after do_copy_app before do_build
+addtask do_push_app_image_to_fotahub after do_stage_app_image before do_build

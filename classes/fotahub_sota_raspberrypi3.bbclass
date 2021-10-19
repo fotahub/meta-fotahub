@@ -8,7 +8,6 @@ KERNEL_IMAGETYPE_sota = "fitImage"
 PREFERRED_PROVIDER_virtual/bootloader_sota ?= "u-boot"
 UBOOT_ENTRYPOINT_sota ?= "0x00008000"
 
-IMAGE_FSTYPES_remove_sota = "rpi-sdimg"
 OSTREE_BOOTLOADER ?= "u-boot"
 
 # OSTree puts its own boot.scr to bcm2835-bootfiles
@@ -24,4 +23,4 @@ OSTREE_KERNEL_ARGS_sota ?= " 8250.nr_uarts=1 bcm2708_fb.fbwidth=720 bcm2708_fb.f
 
 SOTA_CLIENT_FEATURES_append = " ubootenv"
 
-IMAGE_FSTYPES_remove_sota = "garagesign garagecheck"
+IMAGE_FSTYPES_remove_sota = "rpi-sdimg garagesign garagecheck"
