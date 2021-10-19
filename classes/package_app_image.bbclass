@@ -18,24 +18,17 @@ APP_IMAGE_ROOTFS = "${WORKDIR}/rootfs-runc"
 oci_tarball_creation_hook() {
      mkdir -p ${DEPLOY_DIR_APPS}
 
-     bbnote "Creating a New rootfs folder for '${APP_IMAGE_ROOTFS}' application"
      mkdir -p "${APP_IMAGE_ROOTFS}"
 
-     bbnote "Copying old rootfs to ${APP_IMAGE_ROOTFS}"
      cp -R "${IMAGE_ROOTFS}/" "${APP_IMAGE_ROOTFS}/"
-     bbnote "Copying start up file for the application to ${APP_IMAGE_ROOTFS}/${IMAGE_ROOTFS}"
      cp ${CONTAINER_ENTRYPOINT} "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
      chmod 755 "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
-     bbnote "Copy runc json config ${RUNC_CONFIG} at top of ${APP_IMAGE_ROOTFS}/"
      cp ${RUNC_CONFIG} "${APP_IMAGE_ROOTFS}/config.json"
-     bbnote "Copy  systemd service config ${SYSTEMD_CONFIG} at top of ${APP_IMAGE_ROOTFS}/"
      cp ${SYSTEMD_CONFIG} "${APP_IMAGE_ROOTFS}/systemd.service"
      if [ "${AUTOSTART}" -eq "1" ]; then
-          bbnote "Create an auto.start file at top of ${APP_IMAGE_ROOTFS}/"
           touch "${APP_IMAGE_ROOTFS}/auto.start"
      fi
-     if [ "${SCREENUSED}" -eq "1" ]; then
-          bbnote "Create an screen.used file at top of ${APP_IMAGE_ROOTFS}/"
+     if [ "${GUI}" -eq "1" ]; then
           touch "${APP_IMAGE_ROOTFS}/screen.used"
      fi
 
@@ -110,7 +103,7 @@ do_copy_app() {
 
 inherit image image-container
 
-addtask copy_app after do_image_complete before do_build
+addtask do_copy_app after do_image_complete before do_build
 
 # Force tar command to use correct rootfs
 IMAGE_CMD_tar = "${IMAGE_CMD_TAR} -cvf ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.tar -C ${APP_IMAGE_ROOTFS} ."

@@ -61,7 +61,7 @@ do_install_append() {
     sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
     sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 ${APPS_DIR}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 /${APPS_DIR}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/fotahubd.service ${D}${systemd_system_unitdir}/fotahubd.service

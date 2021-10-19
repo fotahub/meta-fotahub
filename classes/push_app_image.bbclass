@@ -1,40 +1,32 @@
 inherit ostree
 
-# OSTree application deployment
-export OSTREE_PACKAGE_BRANCHNAME = "${PN}"
-export OSTREE_REPO_APPS = "${DEPLOY_DIR_IMAGE}/ostree_repo"
-
-do_push_app_to_ostree[depends] = " \
+do_push_app_image_to_fotahub[depends] = " \
     curl-native:do_populate_sysroot \
     ostree-native:do_populate_sysroot \
 "
 
-do_push_app_to_ostree() {
-    if [ -z "$OSTREE_PACKAGE_BRANCHNAME" ]; then
-        bbfatal "OSTREE_PACKAGE_BRANCHNAME should be set in your local.conf"
-    fi
+do_push_app_image_to_fotahub() {
+    bbnote "Initializing OSTree repo at ${OSTREE_REPO}"
+    ostree_init_if_non_existent ${OSTREE_REPO} archive-z2
 
-    ostree_init_if_non_existent ${OSTREE_REPO_APPS} archive-z2
+    bbnote "Adding '${FOTAHUB_OSTREE_REMOTE_NAME}' remote for '${FOTAHUB_OSTREE_URL}' to OSTree repo in ${OSTREE_REPO}"
+    ostree_remote_add_if_not_present ${OSTREE_REPO} ${FOTAHUB_OSTREE_REMOTE_NAME} ${FOTAHUB_OSTREE_URL}
 
-    # Add missing remotes
-    ostree_remote_add_if_not_present ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME} ${OSTREE_HTTP_ADDRESS}
-
-    # Pull locally the remote repo
     set +e
-    # Ignore errors for this command since the remote repo could be empty yet which is fully ok
-    bbnote "Pull locally the repository: ${OSTREE_PACKAGE_BRANCHNAME}"
-    ostree_pull_mirror ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME} ${OSTREE_MIRROR_PULL_DEPTH} ${OSTREE_MIRROR_PULL_RETRIES}
+    # Ignore errors for this command since the remote OSTree repo could be empty yet which is just fine
+    bbnote "Pulling '${PN}' application from remote OSTree repo at FotaHub"
+    ostree_pull_mirror ${OSTREE_REPO} ${FOTAHUB_OSTREE_REMOTE_NAME} ${PN} ${OSTREE_MIRROR_PULL_DEPTH} ${OSTREE_MIRROR_PULL_RETRIES}
     set -e
 
-    # Commit the result
-    bbnote "Commit locally the build result"
-    ostree --repo=${OSTREE_REPO_APPS} commit \
+    bbnote "Committing '${PN}' application to OSTree repo at ${OSTREE_REPO}"
+    ostree --repo=${OSTREE_REPO} commit \
            --tree=tar=${DEPLOY_DIR_APPS}/${IMAGE_LINK_NAME}.tar.gz \
            --skip-if-unchanged \
-           --branch=${OSTREE_PACKAGE_BRANCHNAME} \
+           --branch=${PN} \
            --subject="Commit-id: ${IMAGE_NAME}${IMAGE_NAME_SUFFIX}"
 
-    ostree_push ${OSTREE_REPO_APPS} ${OSTREE_PACKAGE_BRANCHNAME}
+    bbnote "Pushing '${PN}' application to remote OSTree repo at FotaHub"
+    ostree_push_to_fotahub ${OSTREE_REPO} ${PN}
 }
 
-addtask do_push_app_to_ostree after do_copy_app before do_build
+addtask do_push_app_image_to_fotahub after do_copy_app before do_build
