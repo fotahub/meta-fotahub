@@ -23,7 +23,10 @@ do_push_app_image_to_fotahub() {
            --tree=tar=${DEPLOY_DIR_APPS}/${IMAGE_LINK_NAME}.tar.gz \
            --skip-if-unchanged \
            --branch=${PN} \
-           --subject="Commit-id: ${IMAGE_NAME}${IMAGE_NAME_SUFFIX}"
+           --subject="${OSTREE_COMMIT_SUBJECT}" \
+           --body="${OSTREE_COMMIT_BODY}"
+    bbnote "OSTREE_REPO=${OSTREE_REPO}"
+    bbnote "$(ostree --repo=${OSTREE_REPO} log ${PN})"
 
     bbnote "Pushing '${PN}' application to remote OSTree repo at FotaHub"
     ostree_push_to_fotahub ${OSTREE_REPO} ${PN}

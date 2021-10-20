@@ -10,7 +10,6 @@ PREINSTALLED_APPS_OSTREE_PULL_DEPTH = "1"
 # Add dependencies to all applications
 python() {
     dependencies = " " + get_app_dependencies(d)
-    d.appendVarFlag('do_initialize_preinstalled_apps_ostree_repo', 'depends', dependencies)
     d.appendVarFlag('do_populate_preinstalled_apps_ostree_repo', 'depends', dependencies)
 }
 
@@ -23,7 +22,7 @@ def get_app_dependencies(d):
 
     dependencies_string = ""
     for dependency in dependencies:
-        dependencies_string += " " + dependency + ":do_build"
+        dependencies_string += " " + dependency + ":do_push_app_image_to_fotahub"
     return dependencies_string
 
 do_initialize_preinstalled_apps_ostree_repo() {
