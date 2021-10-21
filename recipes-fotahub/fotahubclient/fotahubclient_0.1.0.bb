@@ -33,7 +33,7 @@ RDEPENDS_${PN} += " \
     python3-stringcase \
 "
 
-SRCREV = "902f1af7406d2ec8298333e163852c7ebb25e226"
+SRCREV = "082aeb814beb3d141dd927be07981e751433ead4"
 SRC_URI += " \
     git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
@@ -43,10 +43,10 @@ SRC_URI += " \
 # (see https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-fetching.html#git-fetcher-git for details)
 S = "${WORKDIR}/git"
 
-OSTREE_CONFIG_PATH ?= "/etc/fotahub/fotahub.config"
+FOTAHUB_CONFIG_PATH ?= "/etc/fotahub/fotahub.config"
 
 FILES_${PN} += " \
-    ${base_prefix}${OSTREE_CONFIG_PATH} \
+    ${base_prefix}${FOTAHUB_CONFIG_PATH} \
     ${systemd_system_unitdir}/fotahubd.service \
 "
 
@@ -55,15 +55,15 @@ SYSTEMD_SERVICE_${PN} = "fotahubd.service"
 inherit systemd setuptools3
 
 do_install_append() {
-    install -d ${D}${base_prefix}$(dirname ${OSTREE_CONFIG_PATH})
-    install -m 0644 ${S}/fotahub.config.sample ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(OSTreeGPGVerify\s*=\).\+@\1 ${OSTREE_GPG_VERIFY}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
-    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 /${APPS_DIR}/ostree_repo@" ${D}${base_prefix}${OSTREE_CONFIG_PATH}
+    install -d ${D}${base_prefix}$(dirname ${FOTAHUB_CONFIG_PATH})
+    install -m 0644 ${S}/fotahub.config.sample ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
+    sed -i "s@\(OSTreeGPGVerify\s*=\).\+@\1 ${OSTREE_GPG_VERIFY}@" ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
+    sed -i "s@\(OSDistroName\s*=\).\+@\1 ${DISTRO}-${MACHINE}@" ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
+    sed -i "s@\(OSUpdateVerificationCommand\s*=\).\+@\1 ${OS_UPDATE_VERIFICAITON_COMMAND}@" ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
+    sed -i "s@\(OSUpdateSelfTestCommand\s*=\).\+@\1 ${OS_UPDATE_SELF_TEST_COMMAND}@" ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
+    sed -i "s@\(AppOSTreeHome\s*=\).\+@\1 /${APPS_DIR}/ostree_repo@" ${D}${base_prefix}${FOTAHUB_CONFIG_PATH}
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/fotahubd.service ${D}${systemd_system_unitdir}/fotahubd.service
-    sed -i "s@{{config}}@${OSTREE_CONFIG_PATH}@" ${D}${systemd_system_unitdir}/fotahubd.service
+    sed -i "s@{{config}}@${FOTAHUB_CONFIG_PATH}@" ${D}${systemd_system_unitdir}/fotahubd.service
 }
