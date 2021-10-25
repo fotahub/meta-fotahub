@@ -10,7 +10,7 @@ IMAGE_INSTALL = " \
 CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 
 # Runc configuration
-RUNC_CONFIG = "${THISDIR}/${MACHINE}/hello-world-config.json"
+RUNC_CONFIG = "${THISDIR}/files/hello-world-config.json"
 
 # systemd configuration
 SYSTEMD_CONFIG = "${THISDIR}/files/hello-world.service"

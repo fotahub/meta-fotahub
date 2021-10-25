@@ -1,5 +1,3 @@
-# Copyright (C) 2019 Witekio
-# Released under the MIT license (see COPYING.MIT for the terms)
 #RPI_USE_U_BOOT_sota = "1"
 
 KERNEL_CLASSES_append_sota = " kernel-fitimage"

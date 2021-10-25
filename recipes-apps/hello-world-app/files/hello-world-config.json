@@ -54,7 +54,7 @@
 		"path": "rootfs",
 		"readonly": true
 	},
-	"hostname": "witekio-demo",
+	"hostname": "runc",
 	"mounts": [
 		{
 			"destination": "/proc",

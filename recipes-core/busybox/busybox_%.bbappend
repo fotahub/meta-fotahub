@@ -1,5 +1,3 @@
-# Copyright (C) 2019 Witekio
-# Released under the MIT license (see COPYING.MIT for the terms)
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://busybox-udhcpc.service"
