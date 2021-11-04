@@ -28,9 +28,6 @@ oci_tarball_creation_hook() {
     if [ "${AUTOSTART}" -eq "1" ]; then
         touch "${APP_IMAGE_ROOTFS}/auto.start"
     fi
-    if [ "${GUI}" -eq "1" ]; then
-        touch "${APP_IMAGE_ROOTFS}/screen.used"
-    fi
 
     # Remove useless files (update-alternatives, terminfo, bashbug, /etc/...)
     rm -rf ${APP_IMAGE_ROOTFS}/rootfs/usr/lib/opkg \

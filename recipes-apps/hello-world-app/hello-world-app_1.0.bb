@@ -21,8 +21,5 @@ AUTOSTART = "0"
 # Set AUTOREMOVE to 1 if the application should be removed automatically from the targets for the next update of the application
 AUTOREMOVE = "0"
 
-# Set GUI to 1 if the application requires support for displaying a GUI (X11 and Wayland)
-GUI = "0"
-
 inherit package_app_image
 inherit push_app_image
