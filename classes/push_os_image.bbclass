@@ -34,4 +34,4 @@ IMAGE_CMD_ostreepush() {
 }
 
 addtask do_pull_os_image_from_fotahub after do_rootfs before do_image_ostree
-addtask do_push_os_image_to_fotahub after do_image_ostree before do_image_ostreepush
+addtask do_push_os_image_to_fotahub after do_image_ostreecommit before do_image_ostreepush

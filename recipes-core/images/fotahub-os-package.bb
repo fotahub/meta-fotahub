@@ -17,11 +17,6 @@ IMAGE_INSTALL = " \
     fotahubclient \
 "
 
-DISTRO_FEATURES_append = " systemd"
-VIRTUAL-RUNTIME_init_manager = "systemd"
-DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
-VIRTUAL-RUNTIME_initscripts = ""
-
 PACKAGECONFIG_remove-pn-qtbase  = "x11 xcb xkb xkbcommon-evdev "
 
 WKS_FILES ?= "fotahub-${MACHINE}.wks.in"
