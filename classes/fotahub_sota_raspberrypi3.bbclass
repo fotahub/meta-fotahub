@@ -21,4 +21,4 @@ OSTREE_KERNEL_ARGS_sota ?= " 8250.nr_uarts=1 bcm2708_fb.fbwidth=720 bcm2708_fb.f
 
 SOTA_CLIENT_FEATURES_append = " ubootenv"
 
-IMAGE_FSTYPES_remove_sota = "rpi-sdimg garagesign garagecheck"
+IMAGE_FSTYPES_remove_sota = "rpi-sdimg"
