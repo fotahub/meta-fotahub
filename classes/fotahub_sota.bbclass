@@ -1,9 +1,10 @@
 DISTROOVERRIDES .= "${@bb.utils.contains('DISTRO_FEATURES', 'sota', ':sota', '', d)}"
 
-IMAGE_CLASSES += " image_types_ostree"
-IMAGE_INSTALL_append_sota = " ostree os-release"
+IMAGE_CLASSES += " image_types_ostree image_types_ota"
+IMAGE_INSTALL_append_sota = " ostree os-release ostree-kernel ostree-initramfs \
+                              ${@'ostree-devicetrees' if oe.types.boolean('${OSTREE_DEPLOY_DEVICETREE}') else ''}"
 
-IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush wic', ' ', d)}"
+IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush ota-ext4 wic', ' ', d)}"
 
 PACKAGECONFIG_append_pn-curl = " ssl"
 PACKAGECONFIG_remove_pn-curl = "gnutls"
