@@ -9,17 +9,14 @@ IMAGE_INSTALL = " \
 # Container entrypoint
 CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 
-# Runc configuration
+# runc configuration
 RUNC_CONFIG = "${THISDIR}/files/hello-world-config.json"
 
 # systemd configuration
 SYSTEMD_CONFIG = "${THISDIR}/files/hello-world.service"
 
-# Set AUTOSTART to 1 if the application should be started automatically by systemd
-AUTOSTART = "0"
-
-# Set AUTOREMOVE to 1 if the application should be removed automatically from the targets for the next update of the application
-AUTOREMOVE = "0"
+# Set AUTOLAUNCH to 1 if application should be launched automatically
+AUTOLAUNCH = "0"
 
 inherit package_app_image
 inherit push_app_image
