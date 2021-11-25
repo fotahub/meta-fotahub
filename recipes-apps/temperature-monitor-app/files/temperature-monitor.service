@@ -1,0 +1,8 @@
+[Unit]
+Description=Temperature Monitor Service
+# Wait for network to come up prior to launching this serivce
+After=network.target
+
+[Service]
+WorkingDirectory=/apps/temperature-monitor-app/
+ExecStart=/usr/bin/runc run temperature-monitor-app
