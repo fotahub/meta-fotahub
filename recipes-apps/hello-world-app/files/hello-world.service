@@ -1,6 +1,6 @@
 [Unit]
 Description=Hello World Service
-# wait for network to come up before we run
+# Wait for network to come up prior to launching this serivce
 After=network.target
 
 [Service]

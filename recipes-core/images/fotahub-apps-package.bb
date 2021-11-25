@@ -1,6 +1,6 @@
 IMAGE_FSTYPES = "ext4"
 
-PREINSTALLED_APPS_append ?= "hello-world-app"
+PREINSTALLED_APPS_append ?= "hello-world-app temperature-monitor-app"
 IMAGE_ROOTFS_EXTRA_SPACE ?= "314572"
 
 DEPENDS += "${PREINSTALLED_APPS}"
