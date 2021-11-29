@@ -28,7 +28,7 @@ do
     fi
    
     echo "BCM2835 SoC core temperature: $coreTemp$DEGREE_CELSIUS"
-    curl -H "Content-Type: application/json" -d '{"CoreTemperature":"$coreTemp"}' https://maker.ifttt.com/trigger/$IFTTT_EVENT/json/with/key/$IFTTT_KEY 2>1
+    # curl -H "Content-Type: application/json" -d '{"CoreTemperature":"$coreTemp"}' https://maker.ifttt.com/trigger/$IFTTT_EVENT/json/with/key/$IFTTT_KEY 2>1
     
     sleep 1
 done
