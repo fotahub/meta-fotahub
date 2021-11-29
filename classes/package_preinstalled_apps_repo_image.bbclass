@@ -43,7 +43,7 @@ do_initialize_preinstalled_apps_ostree_repo[depends] = " \
 do_populate_preinstalled_apps_ostree_repo() {
     for app in ${PREINSTALLED_APPS}; do
         bbnote "Adding '${FOTAHUB_OSTREE_REMOTE_NAME}' remote for '${FOTAHUB_OSTREE_URL}' to OSTree repo in ${PREINSTALLED_APPS_OSTREE_REPO}"
-        ostree_remote_add ${PREINSTALLED_APPS_OSTREE_REPO} ${FOTAHUB_OSTREE_REMOTE_NAME} ${FOTAHUB_OSTREE_URL}
+        ostree_remote_add_if_not_present ${PREINSTALLED_APPS_OSTREE_REPO} ${FOTAHUB_OSTREE_REMOTE_NAME} ${FOTAHUB_OSTREE_URL}
 
         set +e
         # Ignore errors for this command since the remote OSTree repo could be empty yet which is just fine
