@@ -13,9 +13,6 @@ CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 # runc configuration
 RUNC_CONFIG = "${THISDIR}/files/temperature-monitor-config.json"
 
-# systemd configuration
-SYSTEMD_CONFIG = "${THISDIR}/files/temperature-monitor.service"
-
 # Set AUTOLAUNCH to 1 if application should be launched automatically
 AUTOLAUNCH = "1"
 

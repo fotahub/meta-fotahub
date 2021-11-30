@@ -1,8 +1,0 @@
-[Unit]
-Description=Hello World Service
-# Wait for network to come up prior to launching this serivce
-After=network.target
-
-[Service]
-WorkingDirectory=/apps/hello-world-app/
-ExecStart=/usr/bin/runc run hello-world-app

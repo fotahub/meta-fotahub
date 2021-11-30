@@ -24,7 +24,6 @@ oci_tarball_creation_hook() {
     cp ${CONTAINER_ENTRYPOINT} "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
     chmod 755 "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
     cp ${RUNC_CONFIG} "${APP_IMAGE_ROOTFS}/config.json"
-    cp ${SYSTEMD_CONFIG} "${APP_IMAGE_ROOTFS}/systemd.service"
     if [ "${AUTOLAUNCH}" -eq "1" ]; then
         touch "${APP_IMAGE_ROOTFS}/autolaunch"
     fi
