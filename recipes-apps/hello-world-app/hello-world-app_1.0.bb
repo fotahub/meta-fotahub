@@ -12,8 +12,8 @@ CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 # runc configuration
 RUNC_CONFIG = "${THISDIR}/files/hello-world-config.json"
 
-# Set AUTOLAUNCH to 1 if application should be launched automatically
-AUTOLAUNCH = "0"
+# Set AUTORUN to 1 if application should be run automatically
+AUTORUN = "0"
 
 inherit package_app_image
 inherit push_app_image

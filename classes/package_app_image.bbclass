@@ -24,8 +24,8 @@ oci_tarball_creation_hook() {
     cp ${CONTAINER_ENTRYPOINT} "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
     chmod 755 "${APP_IMAGE_ROOTFS}/rootfs/entrypoint.sh"
     cp ${RUNC_CONFIG} "${APP_IMAGE_ROOTFS}/config.json"
-    if [ "${AUTOLAUNCH}" -eq "1" ]; then
-        touch "${APP_IMAGE_ROOTFS}/autolaunch"
+    if [ "${AUTORUN}" -eq "1" ]; then
+        touch "${APP_IMAGE_ROOTFS}/autorun"
     fi
 
     # Remove useless files (update-alternatives, terminfo, bashbug, /etc/...)
