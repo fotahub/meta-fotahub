@@ -8,6 +8,7 @@ DEGREE_CELSIUS=$(echo -e '\xc2\xb0')C
 
 read_core_temperature()
 {
+    # Requires 'userland' package to be installed through IMAGE_INSTALL - won't work from within a Docker container though 
     echo $(vcgencmd measure_temp) | egrep -o '[0-9]{2}.[0-9]{1}'
 }
 

@@ -12,9 +12,6 @@ CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 # runc configuration
 RUNC_CONFIG = "${THISDIR}/files/hello-world-config.json"
 
-# systemd configuration
-SYSTEMD_CONFIG = "${THISDIR}/files/hello-world.service"
-
 # Set AUTOLAUNCH to 1 if application should be launched automatically
 AUTOLAUNCH = "0"
 

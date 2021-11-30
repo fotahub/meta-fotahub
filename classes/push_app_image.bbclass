@@ -28,7 +28,7 @@ do_push_app_image_to_fotahub() {
     bbnote "OSTREE_REPO=${OSTREE_REPO}"
     bbnote "$(ostree --repo=${OSTREE_REPO} log ${PN})"
 
-    bbnote "Pushing '${PN}' application to remote OSTree repo at FotaHub"
+    bbnote "Pushing '${PN}' application image to remote OSTree repo at FotaHub"
     ostree_push_to_fotahub ${OSTREE_REPO} ${PN}
 }
 

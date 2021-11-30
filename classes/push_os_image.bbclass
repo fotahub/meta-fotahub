@@ -25,7 +25,7 @@ do_pull_os_image_from_fotahub() {
 }
 
 do_push_os_image_to_fotahub() {
-    bbnote "Pushing '${PN}' application to remote OSTree repo at FotaHub"
+    bbnote "Pushing '${PN}' OS image to remote OSTree repo at FotaHub"
     ostree_push_to_fotahub ${OSTREE_REPO} ${OSTREE_BRANCHNAME}
 }
 
