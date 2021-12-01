@@ -7,11 +7,14 @@ IMAGE_INSTALL = " \
     curl \
 "
 
+PACKAGECONFIG_append_pn-curl = " ssl"
+PACKAGECONFIG_remove_pn-curl = "gnutls"
+
 # Container entrypoint
 CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 
 # runc configuration
-RUNC_CONFIG = "${THISDIR}/files/temperature-monitor-config.json"
+RUNC_CONFIG = "${THISDIR}/files/config.json"
 
 # Set AUTORUN to 1 if application should be run automatically
 AUTORUN = "1"

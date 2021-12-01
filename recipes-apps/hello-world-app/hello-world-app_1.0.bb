@@ -10,7 +10,7 @@ IMAGE_INSTALL = " \
 CONTAINER_ENTRYPOINT= "${THISDIR}/files/entrypoint.sh"
 
 # runc configuration
-RUNC_CONFIG = "${THISDIR}/files/hello-world-config.json"
+RUNC_CONFIG = "${THISDIR}/files/config.json"
 
 # Set AUTORUN to 1 if application should be run automatically
 AUTORUN = "0"
