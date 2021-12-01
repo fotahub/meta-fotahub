@@ -52,7 +52,7 @@
 	},
 	"root": {
 		"path": "rootfs",
-		"readonly": true
+		"readonly": false
 	},
 	"hostname": "runc",
 	"mounts": [
@@ -102,6 +102,19 @@
 			"type": "mqueue",
 			"source": "mqueue",
 			"options": [
+				"nosuid",
+				"noexec",
+				"nodev"
+			]
+		},
+		{
+			"destination": "/etc/resolv.conf",
+			"type": "bind",
+			"source": "/etc/resolv.conf",
+			"options": [
+				"ro",
+				"rbind",
+				"rprivate",
 				"nosuid",
 				"noexec",
 				"nodev"
