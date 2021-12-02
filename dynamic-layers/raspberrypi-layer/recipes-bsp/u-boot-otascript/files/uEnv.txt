@@ -30,14 +30,14 @@ bootcmd=echo "Entering FotaHub boot script..."; \
             echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
             setenv applying_os_update; \
             setenv os_update_reboot_failure_credit; \
-            setenv reverting_os_update 1; \
+            setenv rolling_back_os_update 1; \
             run bootcmd_stage_previous_os; \
         else \
             echo "OS update applied - trying to boot it ($os_update_reboot_failure_credit attempts remaining)..."; \
             setexpr os_update_reboot_failure_credit $os_update_reboot_failure_credit - 1; \
         fi \
         saveenv; \
-    elif env exists reverting_os_update; then \
+    elif env exists rolling_back_os_update; then \
         echo "OS updated reverted - restoring previous OS version..."; \
         run bootcmd_stage_previous_os; \
         saveenv; \
