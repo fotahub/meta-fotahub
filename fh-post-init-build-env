@@ -68,9 +68,6 @@ main()
   if [ -f "$YOCTO_PROJECT_DIR/build.sh" ] && [ ! -f "$YOCTO_BUILD_DIR/build.sh" ]; then
     ln -s "$YOCTO_PROJECT_DIR/build.sh" "$YOCTO_BUILD_DIR/build.sh"
   fi
-
-  # Activate suitable Full Metal Update Extra layer configuration
-  cp $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf/$MACHINE/layer.conf $YOCTO_SOURCES_DIR/meta-fullmetalupdate-extra/conf
 }
 
 main $@

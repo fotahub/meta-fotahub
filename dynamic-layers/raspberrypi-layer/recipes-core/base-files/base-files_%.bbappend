@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend_fotahub-os := "${THISDIR}/${MACHINE}:"
+FILESEXTRAPATHS_prepend_fotahub-os := "${THISDIR}/files:"
 
 do_install_append_fotahub-os() {
     install -d ${D}/${APPS_DIR}

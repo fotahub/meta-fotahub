@@ -33,7 +33,8 @@ do
     echo "BCM2835 SoC core temperature: $coreTemp$DEGREE_CELSIUS"
     
     if [ $coreTemp -ge $ALARM_THRESHOLD ]; then
-        echo "Alarm level reached or exceeded, sending notification..."
+        echo "Alarm level reached or exceeded"
+        # echo "Alarm level reached or exceeded, sending notification..."
         # curl --silent --output /dev/null --show-error --fail \
         #   -H "Content-Type: application/json" -d "{\"CoreTemperature\":\"$coreTemp\"}" \
         #   https://maker.ifttt.com/trigger/$IFTTT_EVENT/json/with/key/$IFTTT_KEY
