@@ -9,9 +9,6 @@ IMAGE_OVERHEAD_FACTOR = "2"
 
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
-    mdns \
-    libnss-mdns \
-    ostree \
     virtual/runc \
     busybox-udhcpc \
     fotahubclient \

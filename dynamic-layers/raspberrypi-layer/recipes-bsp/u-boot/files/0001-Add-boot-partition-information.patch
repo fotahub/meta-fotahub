@@ -1,15 +1,16 @@
 diff --git a/include/configs/rpi.h b/include/configs/rpi.h
-index c499b45..38eeb5c 100644
+index f76c7d18ef..33ab664fad 100644
 --- a/include/configs/rpi.h
 +++ b/include/configs/rpi.h
-@@ -146,6 +146,10 @@
- 	"kernel_addr_r=0x01000000\0" \
- 	"scriptaddr=0x02000000\0" \
- 	"ramdisk_addr_r=0x02100000\0" \
+@@ -144,7 +144,10 @@
+ 	"scriptaddr=0x02400000\0" \
+ 	"pxefile_addr_r=0x02500000\0" \
+ 	"fdt_addr_r=0x02600000\0" \
+-	"ramdisk_addr_r=0x02700000\0"
++	"ramdisk_addr_r=0x02700000\0" \
 +	"devtype=mmc\0" \
 +	"devnum=0\0" \
-+	"distro_bootpart=1\0" \
-+	
++	"distro_bootpart=1\0"
  
- #define BOOT_TARGET_DEVICES(func) \
- 	func(MMC, mmc, 0) \
+ #if CONFIG_IS_ENABLED(CMD_MMC)
+ 	#define BOOT_TARGET_MMC(func) \
