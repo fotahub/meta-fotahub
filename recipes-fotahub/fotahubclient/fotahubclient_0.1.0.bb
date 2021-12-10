@@ -28,14 +28,15 @@ RDEPENDS_${PN} += " \
     systemd \
     ostree \
     python3 \
+    python3-pkg-resources \
     python3-pydbus \
     python3-pygobject \
     python3-stringcase \
 "
 
-SRCREV = "a9b7fb51507963932b480183ce275093f7fa1f01"
+SRCREV = "651c199374db5bd12c89583165fb946f33c56bd6"
 SRC_URI += " \
-    git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=refactoring/deployed-artifacts-rollback-renaming \
+    git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
 "
 
