@@ -1,15 +1,13 @@
 SUMMARY = "Terminal-based tool for making large letters out of ordinary text"
 HOMEPAGE = "http://www.figlet.org"
-LICENSE = "Custom"
+LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1688bcd97b27704f1afcac7336409857"
-NO_GENERIC_LICENSE[Custom] = "LICENSE"
 
-SRC_URI = "ftp://ftp.figlet.org/pub/figlet/program/unix/${PN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "d88cb33a14f1469fff975d021ae2858e"
-SRC_URI[sha256sum] = "bf88c40fd0f077dab2712f54f8d39ac952e4e9f2e1882f1195be9e5e4257417d"
+SRC_URI = "git://github.com/cmatsuoka/figlet.git;nobranch=1;tag=${PV};destsuffix=git"
 
-S = "${WORKDIR}/${PN}-${PV}"
-
+# Redefine unpacked recipe source code location (S) according to the Git fetcher's default checkout location (destsuffix)
+# (see https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-fetching.html#git-fetcher-git for details)
+S = "${WORKDIR}/git"
 
 DEFAULTFONTDIR = "${STAGING_DIR_TARGET}/share/figlet"
 DEFAULTFONTFILE = "standard"
@@ -33,4 +31,3 @@ do_install() {
     install -m 0755 ${S}/showfigfonts ${D}${bindir}
     install -m 0644 ${S}/fonts/*.flf ${D}${DEFAULTFONTDIR}
 }
-

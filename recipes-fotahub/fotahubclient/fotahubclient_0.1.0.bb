@@ -34,7 +34,7 @@ RDEPENDS_${PN} += " \
     python3-stringcase \
 "
 
-SRCREV = "651c199374db5bd12c89583165fb946f33c56bd6"
+SRCREV = "f27b211b7edd5e5d42ea924fb473032504093dc0"
 SRC_URI += " \
     git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
     file://fotahubd.service \
