@@ -35,8 +35,8 @@ RDEPENDS_${PN} += " \
 
 SRCREV = "4a7b2730b1751e410731b8a0b7cf3e31b81dcb82"
 SRC_URI += " \
-    git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=refactoring/deployed-artifacts-rollback-renaming \
-    file://fotahubd.service \
+    git://github.com/fotahub/fotahub-device-sdk-yocto.git;branch=main \
+    file://fotahubd.service.in \
 "
 
 # Redefine unpacked recipe source code location (S) according to the Git fetcher's default checkout location (destsuffix)
