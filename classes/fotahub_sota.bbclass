@@ -27,7 +27,7 @@ OSTREE_DEVICETREE ??= "${KERNEL_DEVICETREE}"
 
 INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
-SOTA_MACHINE ??="none"
+SOTA_MACHINE ??= "${MACHINE}"
 SOTA_MACHINE_rpi ?= "raspberrypi"
 
 SOTA_OVERRIDES_BLACKLIST = "ostree ota"

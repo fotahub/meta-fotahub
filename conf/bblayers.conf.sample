@@ -13,7 +13,7 @@ BBLAYERS = " \
   ${SOURCES_DIR}/meta-openembedded/meta-python \
   ${SOURCES_DIR}/meta-openembedded/meta-networking \
   \
-  ${SOURCES_DIR}/{{meta-machine}} \
+  ${SOURCES_DIR}/meta-{{machine}} \
   \
   ${SOURCES_DIR}/meta-updater \
   ${SOURCES_DIR}/meta-fotahub \
