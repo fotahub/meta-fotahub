@@ -1,18 +1,18 @@
 #!/bin/bash
 
-get_machine_layer_name()
+get_machine_layer_suffix()
 {
   local MACHINE=$1
 
   case "${MACHINE}" in
   "raspberrypi3")
-      echo "meta-raspberrypi"
+      echo "raspberrypi"
       ;;
   "imx6qdlsabresd")
-      echo "meta-freescale"
+      echo "freescale"
       ;;
   *)
-      echo "todo-configure-machine-layer"
+      echo "todo-configure-machine-suffix"
       ;;
   esac
 }
@@ -40,15 +40,15 @@ main()
   fi
 
   # Finish up Yocto build configuration
-  MACHINE_LAYER_NAME=$(get_machine_layer_name $MACHINE)
+  MACHINE_LAYER_SUFFIX=$(get_machine_layer_suffix $MACHINE)
   sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
-  sed -i "s@{{meta-machine}}@$MACHINE_LAYER_NAME@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+  sed -i "s@{{machine}}@$MACHINE_LAYER_SUFFIX@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   sed -i "s@{{machine}}@$MACHINE@" "$YOCTO_BUILD_DIR/conf/local.conf"
   sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" "$YOCTO_BUILD_DIR/conf/local.conf"
 
   # Move newly generated Yocto build configuration files to project directory and sym-link them back to build directory;
   # replace re-generated Yocto build configuration files with sym-links to their counterparts in project directory otherwise
-  if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf"  ]; then
+  if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf" ]; then
     mkdir -p "$YOCTO_PROJECT_DIR/conf"
     mv "$YOCTO_BUILD_DIR/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf"
   else
