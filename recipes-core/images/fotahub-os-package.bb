@@ -10,7 +10,6 @@ IMAGE_OVERHEAD_FACTOR = "2"
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
     virtual/runc \
-    busybox-udhcpc \
     fotahubclient \
 "
 
