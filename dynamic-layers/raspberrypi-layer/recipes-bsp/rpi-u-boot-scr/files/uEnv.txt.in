@@ -9,9 +9,9 @@ bootcmd_create_envfile=if test ! -e mmc $boot_part uboot.env; then \
 
 bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1"
 
-bootcmd_load_fit_conf=setexpr ostree_root gsub "^.*ostree=([^ ]*).*$" "\\\\1" "${bootargs}"; \
-    if test -e mmc $os_part "${ostree_root}/usr/lib/fit_conf"; then \
-        load mmc $os_part $loadaddr "${ostree_root}/usr/lib/fit_conf"; env import -t $loadaddr $filesize; \
+bootcmd_load_fit_conf=setexpr ostree_boot_deployment_root gsub "^.*ostree=([^ ]*).*$" "\\\\1" "${bootargs}"; \
+    if test -e mmc $os_part "${ostree_boot_deployment_root}/usr/lib/fit_conf"; then \
+        load mmc $os_part $loadaddr "${ostree_boot_deployment_root}/usr/lib/fit_conf"; env import -t $loadaddr $filesize; \
     fi
 bootcmd_load_fit_image=load mmc $os_part $ramdisk_addr_r "/boot"$kernel_image
 bootcmd_load=run bootcmd_load_fit_conf; run bootcmd_load_fit_image
