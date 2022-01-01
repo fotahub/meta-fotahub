@@ -30,11 +30,10 @@ INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 SOTA_MACHINE ??= "${MACHINE}"
 SOTA_MACHINE_rpi ?= "raspberrypi"
 
+IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt"
 IMAGE_FSTYPES_remove_sota_rpi = "tar.bz2 ext3"
 
 SOTA_OVERRIDES_BLACKLIST = "ostree ota"
 SOTA_REQUIRED_VARIABLES = "OSTREE_REPO OSTREE_BRANCHNAME OSTREE_OSNAME OSTREE_BOOTLOADER OSTREE_BOOT_PARTITION"
 
 inherit sota_sanity sota_${SOTA_MACHINE}
-
-IMAGE_BOOT_FILES_append_sota = " boot.scr uEnv.txt"
