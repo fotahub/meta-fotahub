@@ -57,15 +57,7 @@ do_populate_preinstalled_apps_ostree_repo() {
     ln -sf ${IMAGE_NAME}-apps.manifest ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}-apps.manifest
 }
 
-do_stage_preinstalled_apps_ostree_repo_image() {
-    mkdir -p ${DEPLOY_DIR_APPS}
-    for type in ${IMAGE_FSTYPES}; do
-        cp ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.${type} ${DEPLOY_DIR_APPS}
-    done
-}
-
 addtask do_populate_preinstalled_apps_ostree_repo after do_rootfs before do_image
-addtask do_stage_preinstalled_apps_ostree_repo_image after do_image_complete before do_build
 
 # Enable image creation based on IMAGE_FSTYPES
 inherit image

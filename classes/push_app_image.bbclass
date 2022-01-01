@@ -20,7 +20,7 @@ do_push_app_image_to_fotahub() {
 
     bbnote "Committing '${PN}' application to OSTree repo at ${OSTREE_REPO}"
     ostree --repo=${OSTREE_REPO} commit \
-           --tree=tar=${DEPLOY_DIR_APPS}/${IMAGE_LINK_NAME}.tar.gz \
+           --tree=tar=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.tar.gz \
            --skip-if-unchanged \
            --branch=${PN} \
            --subject="${OSTREE_COMMIT_SUBJECT}" \
@@ -32,4 +32,4 @@ do_push_app_image_to_fotahub() {
     ostree_push_to_fotahub ${OSTREE_REPO} ${PN}
 }
 
-addtask do_push_app_image_to_fotahub after do_stage_app_image before do_build
+addtask do_push_app_image_to_fotahub after do_image_complete before do_build
