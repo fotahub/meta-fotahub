@@ -7,7 +7,7 @@ DISTROOVERRIDES .= "${@bb.utils.contains('DISTRO_FEATURES', 'sota', ':sota', '',
 
 IMAGE_INSTALL_append_sota = " ostree os-release"
 IMAGE_CLASSES += " image_types_ostree image_types_ota"
-IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush otaimg wic', ' ', d)}"
+IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush otaimg', ' ', d)}"
 
 PACKAGECONFIG_append_pn-curl = " ssl"
 PACKAGECONFIG_remove_pn-curl = "gnutls"
@@ -24,4 +24,10 @@ OSTREE_BOOT_PARTITION ??= "/boot"
 
 OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
-inherit fotahub_sota_${MACHINE}
+SOTA_MACHINE ??= "${MACHINE}"
+SOTA_MACHINE_rpi ?= "raspberrypi"
+
+IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt"
+IMAGE_FSTYPES_remove_sota_rpi = "tar.bz2 ext3"
+
+inherit sota_${SOTA_MACHINE}

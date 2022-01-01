@@ -16,7 +16,7 @@ EXTRA_USERS_PARAMS_fotahub-os = "usermod -P root root;"
 EXTRA_IMAGE_FEATURES_fotahub-os += "ssh-server-dropbear"
 
 # Comment this line to disable SSH-ing into target as root 
-EXTRA_IMAGE_FEATURES += "allow-empty-password"
+EXTRA_IMAGE_FEATURES_fotahub-os += "allow-empty-password"
 
 DL_DIR = "{{downloads}}"
 
