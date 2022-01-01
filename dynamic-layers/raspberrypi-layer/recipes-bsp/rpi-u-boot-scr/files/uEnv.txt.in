@@ -1,24 +1,11 @@
 boot_part=0:1
 os_part=0:2
 
-bootcmd_load_ostree_env=load mmc $os_part $loadaddr /boot/loader/uEnv.txt; env import -t $loadaddr $filesize
-
 bootcmd_create_envfile=if test ! -e mmc $boot_part uboot.env; then \
         saveenv; \
     fi
 
-bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1"
-
-bootcmd_load_fit_conf=setexpr ostree_boot_deployment_root gsub "^.*ostree=([^ ]*).*$" "\\\\1" "${bootargs}"; \
-    if test -e mmc $os_part "${ostree_boot_deployment_root}/usr/lib/fit_conf"; then \
-        load mmc $os_part $loadaddr "${ostree_boot_deployment_root}/usr/lib/fit_conf"; env import -t $loadaddr $filesize; \
-    fi
-bootcmd_load_fit_image=load mmc $os_part $ramdisk_addr_r "/boot"$kernel_image
-bootcmd_load=run bootcmd_load_fit_conf; run bootcmd_load_fit_image
-
-bootcmd_run=bootm "${ramdisk_addr_r}${fit_conf}"
-
-bootcmd_boot=run bootcmd_args; run bootcmd_load; run bootcmd_run
+bootcmd_load_ostree_env=load mmc $os_part $loadaddr /boot/loader/uEnv.txt; env import -t $loadaddr $filesize
 
 bootcmd_stage_previous_os=if env exists bootargs2; then \
         setenv bootargs $bootargs2; \
@@ -29,9 +16,7 @@ bootcmd_stage_previous_os=if env exists bootargs2; then \
         exit; \
     fi
 
-bootcmd=echo "Entering FotaHub boot script..."; \
-    run bootcmd_load_ostree_env; \
-    if env exists applying_os_update; then \
+bootcmd_handle_os_update=if env exists applying_os_update; then \
         if test $os_update_reboot_failure_credit = 0; then \
             echo "Too many failed attempts to boot OS update - restoring previous OS version..."; \
             setenv applying_os_update; \
@@ -49,6 +34,23 @@ bootcmd=echo "Entering FotaHub boot script..."; \
         saveenv; \
     else \
         echo "No OS update in progress - booting normally..."; \
-        run bootcmd_create_envfile; \
-    fi \
+    fi
+
+bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1"
+
+bootcmd_load_fit_conf=setexpr ostree_root gsub "^.*ostree=([^ ]*).*$" "\\\\1" "${bootargs}"; \
+    if test -e mmc $os_part "${ostree_root}/usr/lib/fit_conf"; then \
+        load mmc $os_part $loadaddr "${ostree_root}/usr/lib/fit_conf"; env import -t $loadaddr $filesize; \
+    fi
+bootcmd_load_fit_image=load mmc $os_part $ramdisk_addr_r "/boot"$kernel_image
+bootcmd_load=run bootcmd_load_fit_conf; run bootcmd_load_fit_image
+
+bootcmd_run=bootm "${ramdisk_addr_r}${fit_conf}"
+
+bootcmd_boot=run bootcmd_args; run bootcmd_load; run bootcmd_run
+
+bootcmd=echo "Entering FotaHub boot script..."; \
+    run bootcmd_create_envfile; \
+    run bootcmd_load_ostree_env; \
+    run bootcmd_handle_os_update; \
     run bootcmd_boot

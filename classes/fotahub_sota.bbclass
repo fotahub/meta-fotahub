@@ -4,7 +4,7 @@ IMAGE_CLASSES += " image_types_ostree image_types_ota"
 IMAGE_INSTALL_append_sota = " ostree os-release ostree-kernel ostree-initramfs \
                               ${@'ostree-devicetrees' if oe.types.boolean('${OSTREE_DEPLOY_DEVICETREE}') else ''}"
 
-IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush ota-ext4 wic', ' ', d)}"
+IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush ota-ext4', ' ', d)}"
 IMAGE_FSTYPES += "${@bb.utils.contains('BUILD_OSTREE_TARBALL', '1', 'ostree.tar.bz2', ' ', d)}"
 IMAGE_FSTYPES += "${@bb.utils.contains('BUILD_OTA_TARBALL', '1', 'ota.tar.xz', ' ', d)}"
 
@@ -29,6 +29,8 @@ INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
 SOTA_MACHINE ??= "${MACHINE}"
 SOTA_MACHINE_rpi ?= "raspberrypi"
+
+IMAGE_FSTYPES_remove_sota_rpi = "tar.bz2 ext3"
 
 SOTA_OVERRIDES_BLACKLIST = "ostree ota"
 SOTA_REQUIRED_VARIABLES = "OSTREE_REPO OSTREE_BRANCHNAME OSTREE_OSNAME OSTREE_BOOTLOADER OSTREE_BOOT_PARTITION"
