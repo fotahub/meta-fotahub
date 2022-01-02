@@ -27,7 +27,7 @@ bootcmd_handle_os_update=if env exists applying_os_update; then \
         else \
             echo "OS update applied - trying to boot it ($os_update_reboot_failure_credit attempts remaining)..."; \
             setexpr os_update_reboot_failure_credit $os_update_reboot_failure_credit - 1; \
-        fi \
+        fi; \
         saveenv; \
     elif env exists rolling_back_os_update; then \
         echo "OS updated reverted - restoring previous OS version..."; \
