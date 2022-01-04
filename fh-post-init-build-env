@@ -42,7 +42,7 @@ main()
   # Finish up Yocto build configuration
   MACHINE_LAYER_SUFFIX=$(get_machine_layer_suffix $MACHINE)
   sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
-  sed -i "s@{{machine}}@$MACHINE_LAYER_SUFFIX@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+  sed -i "s@{{machine-layer-suffix}}@$MACHINE_LAYER_SUFFIX@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   sed -i "s@{{machine}}@$MACHINE@" "$YOCTO_BUILD_DIR/conf/local.conf"
   sed -i "s@{{downloads}}@$YOCTO_DOWNLOADS_DIR@" "$YOCTO_BUILD_DIR/conf/local.conf"
 
