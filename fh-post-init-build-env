@@ -44,31 +44,31 @@ main()
   sed -i "s@{{sources}}@$YOCTO_SOURCES_DIR@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   sed -i "s@{{machine}}@$MACHINE_LAYER_SUFFIX@" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   sed -i "s@{{machine}}@$MACHINE@" "$YOCTO_BUILD_DIR/conf/local.conf"
-  sed -i "s@{{downloads}}@$YOCTO_DATA_DIR/downloads@" "$YOCTO_BUILD_DIR/conf/local.conf"
+  sed -i "s@{{downloads}}@$YOCTO_DOWNLOADS_DIR@" "$YOCTO_BUILD_DIR/conf/local.conf"
 
-  # Move newly generated Yocto build configuration files to project directory and sym-link them back to build directory;
-  # replace re-generated Yocto build configuration files with sym-links to their counterparts in project directory otherwise
-  if [ ! -f "$YOCTO_PROJECT_DIR/conf/bblayers.conf" ]; then
-    mkdir -p "$YOCTO_PROJECT_DIR/conf"
-    mv "$YOCTO_BUILD_DIR/conf/bblayers.conf" "$YOCTO_PROJECT_DIR/conf"
+  # Move newly generated Yocto build configuration files to Yocto cockpit directory and sym-link them back to Yocto build directory;
+  # replace re-generated Yocto build configuration files with sym-links to their counterparts in Yocto cockpit directory otherwise
+  if [ ! -f "$YOCTO_COCKPIT_DIR/conf/bblayers.conf" ]; then
+    mkdir -p $YOCTO_COCKPIT_DIR/conf
+    mv $YOCTO_BUILD_DIR/conf/bblayers.conf $YOCTO_COCKPIT_DIR/conf
   else
-    rm "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+    rm $YOCTO_BUILD_DIR/conf/bblayers.conf
   fi
-  ln -s "$YOCTO_PROJECT_DIR/conf/bblayers.conf" "$YOCTO_BUILD_DIR/conf/bblayers.conf"
+  ln -s $YOCTO_COCKPIT_DIR/conf/bblayers.conf $YOCTO_BUILD_DIR/conf/bblayers.conf
 
-  if [ ! -f "$YOCTO_PROJECT_DIR/conf/local.conf" ]; then
-    mv "$YOCTO_BUILD_DIR/conf/local.conf" "$YOCTO_PROJECT_DIR/conf"
+  if [ ! -f "$YOCTO_COCKPIT_DIR/conf/local.conf" ]; then
+    mv $YOCTO_BUILD_DIR/conf/local.conf $YOCTO_COCKPIT_DIR/conf
   else
-    rm "$YOCTO_BUILD_DIR/conf/local.conf"
+    rm $YOCTO_BUILD_DIR/conf/local.conf
   fi
-  ln -s "$YOCTO_PROJECT_DIR/conf/local.conf" "$YOCTO_BUILD_DIR/conf/local.conf"
+  ln -s $YOCTO_COCKPIT_DIR/conf/local.conf $YOCTO_BUILD_DIR/conf/local.conf
 
-  # Sym-link Yocto build script from project directory into build directory 
+  # Sym-link Yocto build script from Yocto cockpit directory into Yocto build directory 
   # (for easy use in `bind.bat bash` or `./bind.sh bash` sessions)
-  if [ -f "$YOCTO_PROJECT_DIR/build.sh" ] && [ ! -f "$YOCTO_BUILD_DIR/build.sh" ]; then
-    ln -s "$YOCTO_PROJECT_DIR/build.sh" "$YOCTO_BUILD_DIR/build.sh"
+  if [ -f "$YOCTO_BUILD_SCRIPT" ] && [ ! -f "$YOCTO_BUILD_DIR/$(basename $YOCTO_BUILD_SCRIPT)" ]; then
+    ln -s $YOCTO_BUILD_SCRIPT $YOCTO_BUILD_DIR/$(basename $YOCTO_BUILD_SCRIPT)
   fi
 }
 
 main $@
-cd /build/yocto/build
+cd $YOCTO_BUILD_DIR
