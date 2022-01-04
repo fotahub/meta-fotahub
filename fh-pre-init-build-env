@@ -17,7 +17,7 @@ main()
   fi
   local MACHINE="$1"
 
-  export TEMPLATECONF="$YOCTO_SOURCES_DIR/meta-fotahub/conf"
+  export TEMPLATECONF="$YOCTO_LAYERS_DIR/meta-fotahub/conf"
 
   # Remove broken/orphaned Yocto build configuration file sym-links, if any
   if [ ! -f "$YOCTO_COCKPIT_DIR/conf/bblayers.conf" ] && [ -h "$YOCTO_BUILD_DIR/conf/bblayers.conf" ]; then
