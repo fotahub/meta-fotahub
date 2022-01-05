@@ -5,15 +5,25 @@ get_machine_layer_suffix()
   local MACHINE=$1
 
   case "${MACHINE}" in
+  "raspberrypi2")
+    ;&
   "raspberrypi3")
-      echo "raspberrypi"
-      ;;
+    ;&
+  "raspberrypi3-6")
+    ;&
+  "raspberrypi4")
+    ;&
+  "raspberrypi4-64")
+    echo "raspberrypi"
+    ;;
+
   "imx6qdlsabresd")
-      echo "freescale"
-      ;;
+    echo "freescale"
+    ;;
+
   *)
-      echo "todo-configure-machine-suffix"
-      ;;
+    echo "todo-configure-machine-suffix"
+    ;;
   esac
 }
 
