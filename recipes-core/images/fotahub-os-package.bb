@@ -1,5 +1,3 @@
-require ${PN}_${MACHINE}.inc
-
 DESCRIPTION = "A minimal image supporting over-the-air OS and application updates using OSTree and OCI containers"
 
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
@@ -12,10 +10,14 @@ IMAGE_INSTALL = " \
     fotahubclient \
 "
 
+IMAGE_INSTALL_append_rpi = " \
+    userland \
+"
+
 PACKAGECONFIG_remove-pn-qtbase  = "x11 xcb xkb xkbcommon-evdev "
 
 IMAGE_FSTYPES += "wic"
-WKS_FILES ?= "fotahub-${MACHINE}.wks.in"
+WKS_FILES ?= "fotahub-${SOTA_MACHINE}.wks.in"
 WIC_CREATE_EXTRA_ARGS_append = " --no-fstab-update"
 
 inherit core-image

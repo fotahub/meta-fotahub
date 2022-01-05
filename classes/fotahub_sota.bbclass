@@ -30,7 +30,7 @@ INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 SOTA_MACHINE ??= "${MACHINE}"
 SOTA_MACHINE_rpi ?= "raspberrypi"
 
-IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt"
+IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt "
 IMAGE_FSTYPES_remove_sota_rpi = "tar.bz2 ext3"
 
 SOTA_OVERRIDES_BLACKLIST = "ostree ota"
