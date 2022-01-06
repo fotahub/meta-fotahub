@@ -18,7 +18,7 @@ INITRAMFS_FSTYPES ?= "${@oe.utils.ifelse(d.getVar('OSTREE_BOOTLOADER') == 'u-boo
 # Please redefine OSTREE_REPO in order to have a persistent OSTree repo
 OSTREE_REPO ?= "${DEPLOY_DIR_IMAGE}/ostree_repo"
 OSTREE_BRANCHNAME ?= "fotahub-os-${MACHINE}"
-OSTREE_OSNAME ?= "os"
+OSTREE_OSNAME ?= "fotahub"
 OSTREE_BOOTLOADER ??= 'u-boot'
 OSTREE_BOOT_PARTITION ??= "/boot"
 OSTREE_KERNEL ??= "${KERNEL_IMAGETYPE}"
