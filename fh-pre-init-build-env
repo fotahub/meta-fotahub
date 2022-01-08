@@ -4,7 +4,7 @@ show_usage()
 {
   cat << EOF
 
-Usage: $(basename $0) <machine>
+Usage: $(basename $0) <machine> <template-layer?>
 
 EOF
 }
@@ -16,14 +16,15 @@ main()
     exit 1
   fi
   local MACHINE="$1"
+  local TEMPLATE_LAYER="${2:-meta-fotahub}"
 
-  export TEMPLATECONF="$YOCTO_LAYERS_DIR/meta-fotahub/conf"
+  export TEMPLATECONF="$YOCTO_LAYERS_DIR/$TEMPLATE_LAYER/conf"
 
-  # Remove broken/orphaned Yocto build configuration file sym-links, if any
-  if [ ! -f "$YOCTO_COCKPIT_DIR/conf/bblayers.conf" ] && [ -h "$YOCTO_BUILD_DIR/conf/bblayers.conf" ]; then
+  # Remove Yocto build configuration file sym-links, if any
+  if [ -h "$YOCTO_BUILD_DIR/conf/bblayers.conf" ]; then
     rm "$YOCTO_BUILD_DIR/conf/bblayers.conf"
   fi
-  if [ ! -f "$YOCTO_COCKPIT_DIR/conf/local.conf" ] && [ -h "$YOCTO_BUILD_DIR/conf/local.conf" ]; then
+  if [ -h "$YOCTO_BUILD_DIR/conf/local.conf" ]; then
     rm "$YOCTO_BUILD_DIR/conf/local.conf"
   fi
 }
