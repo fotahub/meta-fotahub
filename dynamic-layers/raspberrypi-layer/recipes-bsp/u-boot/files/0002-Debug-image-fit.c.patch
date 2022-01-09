@@ -1,0 +1,13 @@
+diff --git a/common/image-fit.c b/common/image-fit.c
+index c52f945120..503cc1a706 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -8,6 +8,8 @@
+  * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+  */
+ 
++#define DEBUG
++
+ #ifdef USE_HOSTCC
+ #include "mkimage.h"
+ #include <time.h>

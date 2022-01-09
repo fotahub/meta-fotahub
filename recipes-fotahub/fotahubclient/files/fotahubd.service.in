@@ -1,11 +1,11 @@
 [Unit]
-Description = FotaHub Client daemon
-After = network.target
+Description=FotaHub Client daemon
+After=network.target
 
 [Service]
-WorkingDirectory = /usr/bin
-ExecStart = /usr/bin/python3 /usr/bin/fotahubd --config {{config}} -v
+WorkingDirectory=/usr/bin
+ExecStart=/usr/bin/python3 /usr/bin/fotahubd --config {{config}} -v
 KillMode=process
 
 [Install]
-WantedBy = multi-user.target
+WantedBy=multi-user.target

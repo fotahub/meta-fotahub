@@ -36,7 +36,7 @@ bootcmd_handle_os_update=if env exists applying_os_update; then \
         echo "No OS update in progress - booting normally..."; \
     fi
 
-bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2 root=/dev/ram0 rw rootwait rootdelay=2 ramdisk_size=8192 panic=1"
+bootcmd_args=setenv bootargs "$bootargs $bootargs_fdt ostree_root=/dev/mmcblk0p2"
 
 bootcmd_load_fit_conf=setexpr ostree_root gsub "^.*ostree=([^ ]*).*$" "\\\\1" "${bootargs}"; \
     if test -e mmc $os_part "${ostree_root}/usr/lib/fit_conf"; then \
