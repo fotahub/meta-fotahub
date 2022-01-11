@@ -1,0 +1,11 @@
+[Unit]
+Description=Unblock RF Kill Soft Blocked Wireless Interfaces
+After=sys-devices-virtual-misc-rfkill.device systemd-remount-fs.service bluetooth.service systemd-networkd.service
+Wants=sys-devices-virtual-misc-rfkill.device systemd-remount-fs.service
+
+[Service]
+WorkingDirectory=/usr/bin
+ExecStart=/usr/bin/rfkill-unblock.sh
+
+[Install]
+WantedBy=multi-user.target

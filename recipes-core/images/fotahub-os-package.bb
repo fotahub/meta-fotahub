@@ -12,6 +12,7 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL_append_rpi = " \
     userland \
+    rfkill-unblock \
 "
 
 PACKAGECONFIG_remove-pn-qtbase  = "x11 xcb xkb xkbcommon-evdev "
