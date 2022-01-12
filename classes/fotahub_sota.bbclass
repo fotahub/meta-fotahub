@@ -26,8 +26,15 @@ OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
 SOTA_MACHINE ??= "${MACHINE}"
 SOTA_MACHINE_rpi ?= "raspberrypi"
+SOTA_MACHINE_porter ?= "porter"
+SOTA_MACHINE_m3ulcb = "m3ulcb"
+SOTA_MACHINE_intel-corei7-64 ?= "minnowboard"
+SOTA_MACHINE_qemux86-64 ?= "qemux86-64"
+SOTA_MACHINE_am335x-evm ?= "am335x-evm-wifi"
+SOTA_MACHINE_freedom-u540 ?= "freedom-u540"
 
-IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt "
-IMAGE_FSTYPES_remove_sota_rpi = "tar.bz2 ext3"
+SOTA_MACHINE_OVERRIDES ??= "0"
+SOTA_MACHINE_OVERRIDES_rpi ?= "1"
 
-inherit sota_${SOTA_MACHINE}
+inherit sota_sanity sota_${SOTA_MACHINE}${@'_overrides' if oe.types.boolean('${SOTA_MACHINE_OVERRIDES}') else ''}
+
