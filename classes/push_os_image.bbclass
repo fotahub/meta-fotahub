@@ -24,13 +24,38 @@ do_pull_os_image_from_fotahub() {
     set -e
 }
 
-do_push_os_image_to_fotahub() {
-    bbnote "Pushing '${PN}' OS image to remote OSTree repo at FotaHub"
-    ostree_push_to_fotahub ${OSTREE_REPO} ${OSTREE_BRANCHNAME}
+IMAGE_CMD_ostreecommit () {
+    echo "Hello"
+    ostree_init_if_non_existent ${OSTREE_REPO} archive-z2
+    echo "OSTree init done"
+
+    # Commit the result using an explicit commit timestamp so as to avoid to end up with commits dating from a long time ago
+    # due to interference with SOURCE_DATE_EPOCH initialized by reproducible_build.bbclass
+    # (see https://github.com/ostreedev/ostree/blob/490f515e189d1da4a0e04cc12b7a5e58e5a924dd/src/libostree/ostree-repo-commit.c#L3042 for details)
+    ostree_target_hash=$(ostree --repo=${OSTREE_REPO} commit \
+           --tree=dir=${OSTREE_ROOTFS} \
+           --skip-if-unchanged \
+           --branch=${OSTREE_BRANCHNAME} \
+           --subject="${OSTREE_COMMIT_SUBJECT}" \
+           --body="${OSTREE_COMMIT_BODY}" \
+           --add-metadata-string=version="${OSTREE_COMMIT_VERSION}" \
+           --timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+           ${EXTRA_OSTREE_COMMIT})
+
+    echo $ostree_target_hash > ${WORKDIR}/ostree_manifest
+
+    if [ ${@ oe.types.boolean('${OSTREE_UPDATE_SUMMARY}')} = True ]; then
+        ostree --repo=${OSTREE_REPO} summary -u
+    fi
 }
 
 IMAGE_CMD_ostreepush() {
     # Do nothing
+}
+
+do_push_os_image_to_fotahub() {
+    bbnote "Pushing '${PN}' OS image to remote OSTree repo at FotaHub"
+    ostree_push_to_fotahub ${OSTREE_REPO} ${OSTREE_BRANCHNAME}
 }
 
 addtask do_pull_os_image_from_fotahub after do_rootfs before do_image_ostree

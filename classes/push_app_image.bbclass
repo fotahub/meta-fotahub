@@ -19,12 +19,16 @@ do_push_app_image_to_fotahub() {
     set -e
 
     bbnote "Committing '${PN}' application to OSTree repo at ${OSTREE_REPO}"
+    # Use an explicit commit timestamp so as to avoid to end up with commits dating from a long time ago
+    # due to interference with SOURCE_DATE_EPOCH initialized by reproducible_build.bbclass
+    # (see https://github.com/ostreedev/ostree/blob/490f515e189d1da4a0e04cc12b7a5e58e5a924dd/src/libostree/ostree-repo-commit.c#L3042 for details)
     ostree --repo=${OSTREE_REPO} commit \
            --tree=tar=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.tar.gz \
            --skip-if-unchanged \
            --branch=${PN} \
            --subject="${OSTREE_COMMIT_SUBJECT}" \
-           --body="${OSTREE_COMMIT_BODY}"
+           --body="${OSTREE_COMMIT_BODY}" \
+           --timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     bbnote "OSTREE_REPO=${OSTREE_REPO}"
     bbnote "$(ostree --repo=${OSTREE_REPO} log ${PN})"
 
