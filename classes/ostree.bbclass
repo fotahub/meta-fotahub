@@ -124,6 +124,26 @@ ostree_pull_mirror() {
 	done 
 }
 
+ostree_commit() {
+    local ostree_repo_path="$1"
+    local ostree_branch_name="$2"
+    local ostree_tree_content="$3"
+    shift; shift; shift; local ostree_extra_commit_args="$@"
+
+    # Commit the result using an explicit commit timestamp so as to avoid to end up with commits dating from a long time ago
+    # due to interference with SOURCE_DATE_EPOCH initialized by reproducible_build.bbclass
+    # (see https://github.com/ostreedev/ostree/blob/490f515e189d1da4a0e04cc12b7a5e58e5a924dd/src/libostree/ostree-repo-commit.c#L3042 for details)
+    ostree commit \
+        --repo=${ostree_repo_path} \
+        --branch=${ostree_branch_name} \
+        --tree=${ostree_tree_content} \
+        --skip-if-unchanged \
+        --subject="${OSTREE_COMMIT_SUBJECT}" \
+        --body="${OSTREE_COMMIT_BODY}" \
+        --timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+        ${ostree_extra_commit_args}
+}
+
 ostree_revparse() {
     local ostree_repo_path="$1"
     local ostree_branch_name="$2"

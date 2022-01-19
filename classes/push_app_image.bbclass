@@ -14,25 +14,14 @@ do_push_app_image_to_fotahub() {
 
     set +e
     # Ignore errors for this command since the remote OSTree repo could be empty yet which is just fine
-    bbnote "Pulling '${PN}' application from remote OSTree repo at FotaHub"
+    bbnote "Pulling '${PN}' branch from remote OSTree repo at FotaHub"
     ostree_pull_mirror ${OSTREE_REPO} ${FOTAHUB_OSTREE_REMOTE_NAME} ${PN} ${OSTREE_MIRROR_PULL_DEPTH} ${OSTREE_MIRROR_PULL_RETRIES}
     set -e
 
-    bbnote "Committing '${PN}' application to OSTree repo at ${OSTREE_REPO}"
-    # Use an explicit commit timestamp so as to avoid to end up with commits dating from a long time ago
-    # due to interference with SOURCE_DATE_EPOCH initialized by reproducible_build.bbclass
-    # (see https://github.com/ostreedev/ostree/blob/490f515e189d1da4a0e04cc12b7a5e58e5a924dd/src/libostree/ostree-repo-commit.c#L3042 for details)
-    ostree --repo=${OSTREE_REPO} commit \
-           --tree=tar=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.tar.gz \
-           --skip-if-unchanged \
-           --branch=${PN} \
-           --subject="${OSTREE_COMMIT_SUBJECT}" \
-           --body="${OSTREE_COMMIT_BODY}" \
-           --timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    bbnote "OSTREE_REPO=${OSTREE_REPO}"
-    bbnote "$(ostree --repo=${OSTREE_REPO} log ${PN})"
+    bbnote "Committing '${PN}' application image to OSTree repo at ${OSTREE_REPO}"
+    ostree_commit ${OSTREE_REPO} ${PN} tar=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.tar.gz ${EXTRA_OSTREE_COMMIT}
 
-    bbnote "Pushing '${PN}' application image to remote OSTree repo at FotaHub"
+    bbnote "Pushing '${PN}' branch to remote OSTree repo at FotaHub"
     ostree_push_to_fotahub ${OSTREE_REPO} ${PN}
 }
 
