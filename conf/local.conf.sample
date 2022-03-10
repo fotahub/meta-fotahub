@@ -2,6 +2,8 @@ CONF_VERSION = "1"
 
 MACHINE = "{{machine}}"
 
+DISABLE_RPI_BOOT_LOGO = "1"
+
 # Set RPI_WIFI_ENABLE to "1" and configure RPI_WIFI_SSID/RPI_WIFI_PWD as appropriate to enable Wi-Fi
 RPI_WIFI_ENABLE_fotahub-os = "0"
 RPI_WIFI_SSID_fotahub-os = "<Your Wi-Fi SSID>"
@@ -17,6 +19,10 @@ EXTRA_IMAGE_FEATURES_fotahub-os += "ssh-server-dropbear"
 
 # Comment this line to disable SSH-ing into target as root 
 EXTRA_IMAGE_FEATURES_fotahub-os += "allow-empty-password"
+
+# Comment/uncomment these lines to enable/disable graphics support in OS/apps images
+DISTRO_FEATURES_remove_fotahub-os = "x11"
+DISTRO_FEATURES_remove_fotahub-apps = "x11"
 
 DL_DIR = "{{downloads}}"
 
