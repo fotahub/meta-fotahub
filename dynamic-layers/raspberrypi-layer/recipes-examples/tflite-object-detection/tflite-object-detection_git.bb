@@ -3,6 +3,14 @@ DESCRIPTION = "TensorFlow Lite Python object detection example with Raspberry Pi
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
 
+COMPATIBLE_MACHINE = "^rpi$"
+
+inherit features_check
+
+# Make sure that opencv gets built with gtk enabled
+# (see layers/meta-openembedded/meta-oe/recipes-support/opencv/opencv_4.1.0.bb:105 for details)
+REQUIRED_DISTRO_FEATURES = "x11"
+
 RDEPENDS_${PN} += " \
     bash \
     python3-opencv \
