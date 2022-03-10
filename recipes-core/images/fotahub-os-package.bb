@@ -10,12 +10,6 @@ IMAGE_INSTALL = " \
     fotahubclient \
 "
 
-IMAGE_INSTALL_append_rpi = " \
-    userland \
-"
-
-PACKAGECONFIG_remove-pn-qtbase  = "x11 xcb xkb xkbcommon-evdev "
-
 IMAGE_FSTYPES += "wic"
 WKS_FILES ?= "fotahub-${SOTA_MACHINE}.wks.in"
 WIC_CREATE_EXTRA_ARGS_append = " --no-fstab-update"
