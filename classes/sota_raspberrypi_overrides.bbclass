@@ -1,11 +1,6 @@
 # Add U-Boot scripts to boot partition
 IMAGE_BOOT_FILES_append_sota_rpi = " boot.scr uEnv.txt "
 
-# Remove unnecessary device tree overlays enabling VC4 graphics driver for Broadcom’s VideoCore IV GPU on Raspberry Pi
-# (introduced by meta-updater/classes/sota_raspberrypi.bbclass)
-# to prevent blank screen resulting from potential device tree parameter misconfigurations/mismatches
-KERNEL_DEVICETREE_raspberrypi3_sota = " bcm2710-rpi-3-b.dtb"
-
 # Set OStree-managed Kernel args
 # (inspired by meta-raspberrypi/recipes-bsp/bootfiles/rpi-cmdline.bb in hardknott,
 # see https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html for details)
