@@ -1,6 +1,5 @@
 # Force usage of vc4-kms-v3d instead of vc4-fkms-v3d device tree overlay (VC4 graphics driver for Broadcom’s VideoCore IV GPU) 
-# to avoid empty black screen right after boot
-# (see meta-raspberrypi/conf/machine/raspberrypi3.conf for original settings)
+# to avoid empty black screen right after boot (see meta-raspberrypi/conf/machine/raspberrypi3.conf for original settings)
 VC4DTBO_raspberrypi3 ?= "vc4-kms-v3d"
 VC4DTBO_raspberrypi4 ?= "vc4-kms-v3d"
 
