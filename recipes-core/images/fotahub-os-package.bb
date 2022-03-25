@@ -10,7 +10,10 @@ IMAGE_INSTALL = " \
     fotahubclient \
 "
 
+IMAGE_INSTALL_append = " ${@bb.utils.contains('DISTRO_FEATURES','x11','xauth','',d)}"
+
 IMAGE_INSTALL_append_rpi = " \
+    kernel-modules \
     rfkill-unblock \
 "
 
