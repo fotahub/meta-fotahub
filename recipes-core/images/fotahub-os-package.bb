@@ -7,7 +7,7 @@ IMAGE_OVERHEAD_FACTOR = "2"
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
     virtual/runc \
-    fotahubclient \
+    python3-fotahubclient \
 "
 
 IMAGE_INSTALL_append = " ${@bb.utils.contains('DISTRO_FEATURES','x11','xauth','',d)}"
