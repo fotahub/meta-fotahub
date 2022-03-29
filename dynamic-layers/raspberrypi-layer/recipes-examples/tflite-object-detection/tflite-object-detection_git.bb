@@ -34,7 +34,7 @@ FILES_${PN} += " \
     ${bindir}/detect.py \
     ${bindir}/object_detector.py \
     ${bindir}/utils.py \
-    ${bindir}/detect.sh \
+    ${bindir}/detect \
     ${datadir}/tflite/efficientdet_lite0.tflite \
 "
 
