@@ -29,7 +29,7 @@ bootcmd_handle_os_update=if env exists applying_os_update; then \
         fi; \
         saveenv; \
     elif env exists rolling_back_os_update; then \
-        echo "OS updated reverted - restoring previous OS version..."; \
+        echo "OS update rolled back - restoring previous OS version..."; \
         run bootcmd_stage_previous_os; \
         saveenv; \
     else \
