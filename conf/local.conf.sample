@@ -8,7 +8,6 @@ DISABLE_RPI_BOOT_LOGO = "1"
 RPI_WIFI_ENABLE_fotahub-os = "0"
 RPI_WIFI_SSID_fotahub-os = "<Your Wi-Fi SSID>"
 RPI_WIFI_PWD_fotahub-os = "<Your Wi-Fi password>"
-IMAGE_INSTALL_append += "${@bb.utils.contains('RPI_WIFI_ENABLE', '1', ' hostapd', '', d)}"
 
 # Set root password
 INHERIT += "extrausers"

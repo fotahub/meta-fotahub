@@ -13,7 +13,7 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL_append_rpi = " \
     kernel-modules \
-    rfkill-unblock \
+    ${@bb.utils.contains('RPI_WIFI_ENABLE', '1', 'hostapd rfkill-unblock', '', d)} \
 "
 
 IMAGE_FSTYPES += "wic"
