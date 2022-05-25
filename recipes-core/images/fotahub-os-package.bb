@@ -6,11 +6,10 @@ IMAGE_OVERHEAD_FACTOR = "2"
 
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
-    virtual/runc \
     python3-fotahubclient \
+    ${@bb.utils.contains('DISTRO_FEATURES','x11','xauth','',d)} \
+    ${@'virtual/runc' if d.getVar('PREINSTALLED_APPS') else ''} \
 "
-
-IMAGE_INSTALL_append = " ${@bb.utils.contains('DISTRO_FEATURES','x11','xauth','',d)}"
 
 IMAGE_INSTALL_append_rpi = " \
     kernel-modules \
@@ -18,7 +17,7 @@ IMAGE_INSTALL_append_rpi = " \
 "
 
 IMAGE_FSTYPES += "wic"
-WKS_FILES ?= "fotahub-${SOTA_MACHINE}.wks.in"
+WKS_FILES ?= "${@ 'sdimage-sota-apps-${SOTA_MACHINE}.wks.in' if d.getVar('PREINSTALLED_APPS') else 'sdimage-sota.wks'}"
 WIC_CREATE_EXTRA_ARGS_append = " --no-fstab-update"
 
 inherit core-image

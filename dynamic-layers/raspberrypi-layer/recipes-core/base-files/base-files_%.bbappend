@@ -1,7 +1,10 @@
-FILESEXTRAPATHS_prepend_fotahub-os := "${THISDIR}/files:"
-
 do_install_append_fotahub-os() {
-    install -d ${D}/${APPS_DIR}
+    if [ -n "${PREINSTALLED_APPS}" ]; then
+        install -d ${D}/${APPS_DIR}
+        cat >> ${D}${sysconfdir}/fstab <<EOF
 
-    sed -e 's@{{apps}}@${APPS_DIR}@g' -i ${D}/${sysconfdir}/fstab
+/dev/mmcblk0p3	/${APPS_DIR}	ext4	defaults	0	0
+
+EOF
+    fi
 }

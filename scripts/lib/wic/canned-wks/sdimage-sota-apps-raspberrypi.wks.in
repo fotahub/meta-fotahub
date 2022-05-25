@@ -1,0 +1,9 @@
+# short-description: Create SD card image
+# short-description: Create OTA-enabled Raspberry Pi SD card image supporting application side loading
+# long-description: Creates a partitioned SD card image with OSTree physical sysroot as a payload for use with Raspberry Pi. 
+# Boot files are located in the first vfat partition. The third partition is reserved for OTA-updatable applications being 
+# deployed as a separate OSTree root file system each. 
+
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 20
+part / --source otaimage --ondisk mmcblk0 --fstype=ext4 --label root --align 4096
+part /${apps} --ondisk mmcblk0 --fstype=ext4 --source rawcopy --sourceparams="file=${DEPLOY_DIR_APPS}/fotahub-apps-package-${MACHINE}.ext4" --label apps --active --align 4096
